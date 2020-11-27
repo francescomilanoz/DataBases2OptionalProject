@@ -3,6 +3,7 @@
 	<name>DB2OptionalProjectWeb</name>
 	<comment></comment>
 	<projects>
+		<project>DB2OptionalProjectEJB</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
