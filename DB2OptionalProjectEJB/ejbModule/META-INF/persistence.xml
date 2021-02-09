@@ -3,5 +3,16 @@
 	<persistence-unit name="DB2OptionalProjectEJB" transaction-type="JTA">
 		<jta-data-source>db_marketing_app</jta-data-source>
 		<class>it.polimi.db2.marketing.entities.User</class>
+				<properties>
+			<property name="eclipselink.logging.level" value="FINE" />
+			<property name="javax.persistence.jdbc.driver"
+				value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url"
+				value="jdbc:mysql://localhost:3306/db_marketing_app " />
+			<property name="javax.persistence.jdbc.user"
+				value="root" />
+			<property name="javax.persistence.jdbc.password"
+				value="2lolletti" />
+		</properties>
 	</persistence-unit>
 </persistence>
