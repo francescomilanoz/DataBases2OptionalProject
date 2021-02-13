@@ -7,7 +7,8 @@
 <body>
 
 	<div>
-		<p>Complete the form to create a new profile</p>
+		<p>Complete the form to create a new profile.</p>
+		<p>Once signed-up you'll be redirected to the log-in page. </p>
 		<form action="#" th:action="@{/CreateUser}" method="POST">
 			<fieldset>
 				<p>
@@ -21,6 +22,7 @@
 				</p>
 
 				<input type="submit" value="Create User">
+				<p th:text=" ${signUpError}"></p>
 			</fieldset>
 		</form>
 	</div>

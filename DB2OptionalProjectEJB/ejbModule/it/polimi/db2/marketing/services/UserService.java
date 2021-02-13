@@ -41,18 +41,33 @@ public class UserService {
 
 	}
 	
-	/*
-	// check if the username/email already exists
-		public boolean checkUniqueness(String username, String email) {
+	
+	
+	// check if the username already exists
+		public boolean checkUsernameUniqueness(String username) {
 			List<User> users = null;
-			users = em.createQuery("Select * from User u where u.username = '" + username + "' or u.email = '" + email +"'", User.class).getResultList();
+			users = em.createNamedQuery("User.checkUsernameUniqueness", User.class).setParameter(1, username)
+					.getResultList();
 			if (users.isEmpty())
 				return true;
 			else {
 				return false;
 			}
 		}
-		*/
+		
+		// check if the email already exists
+		public boolean checkEmailUniqueness(String email) {
+			List<User> users = null;
+			users = em.createNamedQuery("User.checkEmailUniqueness", User.class).setParameter(1, email)
+					.getResultList();
+			if (users.isEmpty())
+				return true;
+			else {
+				return false;
+			}
+		}
+		
+		
 
 
 	public void updateProfile(User u) throws UpdateProfileException {
