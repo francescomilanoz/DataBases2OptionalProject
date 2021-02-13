@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Sign-up</title>
+</head>
+<body>
+
+	<div>
+		<p>Complete the form to create a new profile</p>
+		<form action="#" th:action="@{/CreateUser}" method="POST">
+			<fieldset>
+				<p>
+					Username: <input type="text" name="username" required />
+				</p>
+				<p>
+					E-mail: <input type="text" name="email" required />
+				</p>
+				<p>
+					Password: <input type="password" name="password" required />
+				</p>
+
+				<input type="submit" value="Create User">
+			</fieldset>
+		</form>
+	</div>
+	
+</body>
+</html>

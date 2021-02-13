@@ -21,9 +21,9 @@ DROP TABLE IF EXISTS `user`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(45) NOT NULL,
+  `username` varchar(45) NOT NULL UNIQUE,
   `password` varchar(45) NOT NULL,
-  `email` varchar(45) NOT NULL,
+  `email` varchar(45) NOT NULL UNIQUE,
   `active` bool NOT NULL,
   `points` int NOT NULL,
   `type` varchar(45) NOT NULL,
@@ -31,15 +31,17 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+
+
 --
--- Dumping data for table `expenses`
+-- Dumping data for table `user`
 --
 
--- LOCK TABLES `expenses` WRITE;
--- /*!40000 ALTER TABLE `expenses` DISABLE KEYS */;
--- INSERT INTO `expenses` VALUES (33,5.00,1.00,5.00,48),(34,4.00,1.00,6.00,50),(35,4.00,1.00,7.00,51),(36,4.00,1.00,8.00,52),(37,4.00,1.00,9.00,54),(38,4.00,1.00,1.00,55),(39,4.00,1.00,2.00,56),(102,7.00,1.00,4.00,134),(105,7.00,1.00,5.00,138),(106,7.00,1.00,6.00,139),(121,8.00,8.00,8.00,174),(122,8.00,8.00,8.00,175),(132,10.00,10.00,10.00,195);
--- /*!40000 ALTER TABLE `expenses` ENABLE KEYS */;
--- UNLOCK TABLES;
+ LOCK TABLES `user` WRITE;
+ /*!40000 ALTER TABLE `user` DISABLE KEYS */;
+ INSERT INTO `user` VALUES (1, 'user1', 'user1pass', 'user1@gmail.com', true, 100, 'user'), (2, 'user2', 'user2pass', 'user2@gmail.com', true, 50, 'admin');
+ /*!40000 ALTER TABLE `user` ENABLE KEYS */;
+ UNLOCK TABLES;
 
 --
 -- Table structure for table `product`

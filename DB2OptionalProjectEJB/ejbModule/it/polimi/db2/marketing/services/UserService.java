@@ -7,6 +7,7 @@ import javax.persistence.PersistenceException;
 import javax.persistence.NonUniqueResultException;
 import it.polimi.db2.marketing.entities.User;
 import it.polimi.db2.marketing.exceptions.*;
+
 import java.util.List;
 
 @Stateless
@@ -32,6 +33,27 @@ public class UserService {
 		throw new NonUniqueResultException("More than one user registered with same credentials");
 
 	}
+	
+	public void createUser(String username, String email, String password) {
+		User user = new User(username, email, password);
+		
+		em.persist(user); // makes also mission object managed via cascading
+
+	}
+	
+	/*
+	// check if the username/email already exists
+		public boolean checkUniqueness(String username, String email) {
+			List<User> users = null;
+			users = em.createQuery("Select * from User u where u.username = '" + username + "' or u.email = '" + email +"'", User.class).getResultList();
+			if (users.isEmpty())
+				return true;
+			else {
+				return false;
+			}
+		}
+		*/
+
 
 	public void updateProfile(User u) throws UpdateProfileException {
 		try {

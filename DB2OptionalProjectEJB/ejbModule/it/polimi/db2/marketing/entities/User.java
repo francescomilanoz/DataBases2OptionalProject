@@ -9,7 +9,7 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@Table(name = "usertable", schema = "db_marketing_app")
+@Table(name = "user", schema = "db_marketing_app")
 @NamedQuery(name = "User.checkCredentials", query = "SELECT r FROM User r  WHERE r.username = ?1 and r.password = ?2")
 
 public class User implements Serializable {
@@ -27,7 +27,9 @@ public class User implements Serializable {
 
 	private String username;
 	
-	private int point;
+	private int points;
+	
+	private String type;
 
 	// Bidirectional many-to-one association to Mission
 	/*
@@ -46,6 +48,15 @@ public class User implements Serializable {
 	private List<Mission> missions;*/
 
 	public User() {
+	}
+	
+	public User(String username, String email, String password) {
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.type = "User";
+		this.points = 0;
+		this.active = true;
 	}
 
 	public int getId() {
@@ -72,14 +83,6 @@ public class User implements Serializable {
 		this.username = username;
 	}
 
-	public int getPoint() {
-		return point;
-	}
-
-	public void setPoint(int point) {
-		this.point = point;
-	}
-
 	public boolean isActive() {
 		return active;
 	}
@@ -94,6 +97,22 @@ public class User implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public int getPoints() {
+		return points;
+	}
+
+	public void setPoints(int points) {
+		this.points = points;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	/*public List<Mission> getMissions() {
