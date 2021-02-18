@@ -26,7 +26,7 @@ public class GoToIndexPage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 
-	public GoToIndexPage() {
+	public GoToIndexPage()  {
 		super();
 	}
 
