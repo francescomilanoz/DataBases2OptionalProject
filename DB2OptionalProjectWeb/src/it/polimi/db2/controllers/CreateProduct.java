@@ -60,15 +60,14 @@ public class CreateProduct extends HttpServlet {
 			title = StringEscapeUtils.escapeJava(request.getParameter("productName"));
 
 			System.out.println("Titolo fatto" + title);
-			
-			
+
 			Part imgFile = request.getPart("productPhoto");
 			System.out.println("Foto fatto");
 			InputStream imgContent = imgFile.getInputStream();
 			System.out.println("Foto2 fatto");
 			image = it.polimi.db2.utils.ImageUtils.readImage(imgContent);
 			System.out.println("Foto3 fatto");
-			
+
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			try {
 				date = (Date) sdf.parse(request.getParameter("productDate"));
@@ -77,7 +76,6 @@ public class CreateProduct extends HttpServlet {
 				e.printStackTrace();
 			}
 			System.out.println("Date fatto" + date);
-			
 
 			isBadRequest = title.isEmpty() || image.length == 0 || date.toString().isEmpty();
 		} catch (NumberFormatException | NullPointerException e) {
@@ -92,8 +90,20 @@ public class CreateProduct extends HttpServlet {
 		}
 
 		boolean dateUnique = mService.checkDateUniqueness(date);
+		
+		Date currentDate = new java.util.Date();
 
-		if (!dateUnique) {
+		if (date.before(currentDate) && (date.getDay() != currentDate.getDay() || date.getMonth() != currentDate.getMonth() || date.getYear() != currentDate.getYear())) {
+			
+			ServletContext servletContext = getServletContext();
+			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+
+			ctx.setVariable("productCreationError", "It's not possible to create a product for a past date. ");
+
+			path1 = "/CreateProduct.html";
+			templateEngine.process(path1, ctx, response.getWriter());
+
+		} else if (!dateUnique) {
 
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
@@ -105,7 +115,7 @@ public class CreateProduct extends HttpServlet {
 		}
 
 		else {
-			// Create user in DB
+			// Create product in DB
 			try {
 
 				mService.createProduct(title, image, date);

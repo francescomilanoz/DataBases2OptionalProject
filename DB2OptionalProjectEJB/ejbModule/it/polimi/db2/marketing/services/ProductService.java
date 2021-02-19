@@ -30,24 +30,13 @@ public class ProductService {
 	public ProductService() {
 	}
 	
+	
 	public Product loadProductOfTheDay() {
-		
-		//DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        //Date date = new Date(System.currentTimeMillis());
-        
 		java.util.Date date=new java.util.Date();
 		
-		java.sql.Date sqlDate=new java.sql.Date(date.getTime());
-      
-		//String dates = dateFormat.format(date);
-		
-		System.out.println("Data ora: " + date + " " + sqlDate);
-		
 		List<Product> products = new ArrayList<>();
-		products = em.createNamedQuery("Product.findByDate", Product.class).setParameter(1, sqlDate)
+		products = em.createNamedQuery("Product.findByDate", Product.class).setParameter(1, date)
 				.getResultList();
-		
-		System.out.println("Arrivato qui");
 		
 		return products.get(0);
 	}

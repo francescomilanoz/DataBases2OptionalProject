@@ -20,16 +20,16 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL AUTO_INCREMENT,
   `username` varchar(45) NOT NULL,
   `password` varchar(45) NOT NULL,
   `email` varchar(45) NOT NULL,
   `active` bool NOT NULL,
   `points` int NOT NULL,
   `type` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`), 
-  UNIQUE(username), 
-  UNIQUE(email)
+  PRIMARY KEY (`user_id`), 
+  UNIQUE(`username`), 
+  UNIQUE(`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -41,7 +41,7 @@ CREATE TABLE `user` (
 
  LOCK TABLES `user` WRITE;
  /*!40000 ALTER TABLE `user` DISABLE KEYS */;
- INSERT INTO `user` VALUES (1, 'user1', 'user1pass', 'user1@gmail.com', true, 100, 'user'), (2, 'user2', 'user2pass', 'user2@gmail.com', true, 50, 'admin');
+ INSERT INTO `user` VALUES (1, 'admin', 'admin', 'admin', true, 100, 'Admin'), (2, 'user', 'user', 'user', true, 50, 'User');
  /*!40000 ALTER TABLE `user` ENABLE KEYS */;
  UNLOCK TABLES;
 
@@ -53,28 +53,13 @@ DROP TABLE IF EXISTS `product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `product` (
-  `productID` int NOT NULL AUTO_INCREMENT,
-  `date` date NOT NULL,
-  `name` varchar(45) NOT NULL,
-  `productImage` longblob, 
-  PRIMARY KEY (`productID`), 
-  UNIQUE(`date`)
+  `product_id` int NOT NULL AUTO_INCREMENT,
+  `product_date` date NOT NULL,
+  `product_name` varchar(45) NOT NULL,
+  `product_image` longblob, 
+  PRIMARY KEY (`product_id`), 
+  UNIQUE(`product_date`)
 ) ENGINE=InnoDB AUTO_INCREMENT=196 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `answer`
---
-
-DROP TABLE IF EXISTS `answer`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `answer` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `text` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`), 
-  CONSTRAINT `answer_user_id` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -86,12 +71,31 @@ DROP TABLE IF EXISTS `question`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `question` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `text` varchar(45) DEFAULT NULL,
-  `type` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `question_product_id` FOREIGN KEY (`id`) REFERENCES `product` (`productID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `answer_id` FOREIGN KEY (`id`) REFERENCES `answer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  `question_id` int NOT NULL AUTO_INCREMENT,
+  `question_text` varchar(45) DEFAULT NULL,
+  `question_type` varchar(45) DEFAULT NULL,
+  `product_id` int NOT NULL,
+  PRIMARY KEY (`question_id`),
+  CONSTRAINT `question_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Table structure for table `answer`
+--
+
+DROP TABLE IF EXISTS `answer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `answer` (
+  `answer_id` int NOT NULL AUTO_INCREMENT,
+  `answer_text` varchar(45) DEFAULT NULL,
+  `user_id` int NOT NULL,
+  `question_id` int NOT NULL,
+  PRIMARY KEY (`answer_id`), 
+  CONSTRAINT `answer_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE, 
+  CONSTRAINT `answer_question_id` FOREIGN KEY (`question_id`) REFERENCES `question` (`question_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -104,11 +108,13 @@ DROP TABLE IF EXISTS `review`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `review` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `text` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`), 
-    CONSTRAINT `review_product_id` FOREIGN KEY (`id`) REFERENCES `product` (`productID`) ON DELETE CASCADE ON UPDATE CASCADE, 
-	CONSTRAINT `review_user_id` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  `review_id` int NOT NULL AUTO_INCREMENT,
+  `review_text` varchar(45) DEFAULT NULL,
+  `product_id` int NOT NULL, 
+  `user_id` int NOT NULL, 
+  PRIMARY KEY (`review_id`), 
+  CONSTRAINT `review_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE, 
+  CONSTRAINT `review_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -120,11 +126,12 @@ DROP TABLE IF EXISTS `login`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `login` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `date` date NOT NULL,
-  `time` time NOT NULL,
-  PRIMARY KEY (`id`), 
-  CONSTRAINT `login_user_id` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  `login_id` int NOT NULL AUTO_INCREMENT,
+  `login_date` date NOT NULL,
+  `login_time` time NOT NULL,
+  `user_id` int NOT NULL,
+  PRIMARY KEY (`login_id`), 
+  CONSTRAINT `login_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=196 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -137,9 +144,9 @@ DROP TABLE IF EXISTS `offensive_words`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `offensive_words` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `text` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `offensive_word_id` int NOT NULL AUTO_INCREMENT,
+  `offensive_word_text` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`offensive_word_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=196 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

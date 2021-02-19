@@ -18,15 +18,12 @@
 		
 <p th:text="${'Nice to see you again ' + session.user.username}"> </p>
 	
-	<!-- 
-	
 		<div>
 		<img alt="product"
 			th:src="*{'data:image/png;base64,'+ product.getProductImageData()}">
 		<p th:text="${product.name}"></p>
 		<p th:text=" ${noProduct}"></p>
 	</div>
-	 -->
 
 	<a th:href="@{/Questionnaire}">Go To Questionnaire</a>
 

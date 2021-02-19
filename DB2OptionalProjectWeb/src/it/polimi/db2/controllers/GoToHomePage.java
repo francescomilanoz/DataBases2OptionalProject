@@ -26,10 +26,9 @@ import it.polimi.db2.marketing.entities.*;
 public class GoToHomePage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
-	/*@EJB(name = "it.polimi.db2.mission.services/MissionService")
-	private MissionService mService;
-	@EJB(name = "it.polimi.db2.mission.services/ProjectService")
-	private ProjectService pService;*/
+
+	@EJB(name = "it.polimi.db2.marketing.services/ProductService")
+	private ProductService pService;
 
 	public GoToHomePage() {
 		super();
@@ -55,9 +54,9 @@ public class GoToHomePage extends HttpServlet {
 		}
 		
 		
-		ProductService ps = new ProductService();
+
 		Product productOfTheDay = null;
-		//productOfTheDay = ps.loadProductOfTheDay();
+		productOfTheDay = pService.loadProductOfTheDay();
 
 		
 		String path = "Home.html";
@@ -65,12 +64,12 @@ public class GoToHomePage extends HttpServlet {
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 
 		
-		/*
+		
 		if (productOfTheDay != null) {
 			ctx.setVariable("product", productOfTheDay);
 		} else {
 			ctx.setVariable("noProduct", "No product of the day.");
-		}*/
+		}
 		
 		
 		templateEngine.process(path, ctx, response.getWriter());
