@@ -53,14 +53,14 @@ DROP TABLE IF EXISTS `product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `product` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `productID` int NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
   `name` varchar(45) NOT NULL,
-  `image` longblob NOT NULL,
-  PRIMARY KEY (`id`)
+  `productImage` longblob, 
+  PRIMARY KEY (`productID`), 
+  UNIQUE(`date`)
 ) ENGINE=InnoDB AUTO_INCREMENT=196 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
 
 --
 -- Table structure for table `answer`
@@ -90,7 +90,7 @@ CREATE TABLE `question` (
   `text` varchar(45) DEFAULT NULL,
   `type` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `question_product_id` FOREIGN KEY (`id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `question_product_id` FOREIGN KEY (`id`) REFERENCES `product` (`productID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `answer_id` FOREIGN KEY (`id`) REFERENCES `answer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -107,7 +107,7 @@ CREATE TABLE `review` (
   `id` int NOT NULL AUTO_INCREMENT,
   `text` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`), 
-    CONSTRAINT `review_product_id` FOREIGN KEY (`id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE, 
+    CONSTRAINT `review_product_id` FOREIGN KEY (`id`) REFERENCES `product` (`productID`) ON DELETE CASCADE ON UPDATE CASCADE, 
 	CONSTRAINT `review_user_id` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;

@@ -4,8 +4,31 @@
 <meta charset="ISO-8859-1">
 <title>Home</title>
 </head>
-<body>
-	<h1>hhhhhhhhhhh</h1>
+<body>	
+	
+	<div align="right">
+		<a th:href="@{/GoToProfilePage}">Your Profile</a>
+	</div>
+	
+<div align="right">
+		<a th:href="@{/Logout}">Log-out</a>
+	</div>
+
+	<h1>Welcome!</h1>
+		
+<p th:text="${'Nice to see you again ' + session.user.username}"> </p>
+	
+	<!-- 
+	
+		<div>
+		<img alt="product"
+			th:src="*{'data:image/png;base64,'+ product.getProductImageData()}">
+		<p th:text="${product.name}"></p>
+		<p th:text=" ${noProduct}"></p>
+	</div>
+	 -->
+
+	<a th:href="@{/Questionnaire}">Go To Questionnaire</a>
 
 </body>
 </html>

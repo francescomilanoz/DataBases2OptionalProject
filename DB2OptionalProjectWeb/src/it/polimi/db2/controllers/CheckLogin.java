@@ -80,8 +80,20 @@ public class CheckLogin extends HttpServlet {
 			templateEngine.process(path, ctx, response.getWriter());
 		} else {
 			request.getSession().setAttribute("user", user);
+			if(user.getType().equals("User") && user.isActive()) {
 			path = getServletContext().getContextPath() + "/Home";
 			response.sendRedirect(path);
+			
+			} else if(user.getType().equals("User") && !user.isActive()) {
+				ServletContext servletContext = getServletContext();
+				final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+				ctx.setVariable("errorMsg", "Sorry, your account has been banned.");
+				path = "/index.html";
+				templateEngine.process(path, ctx, response.getWriter());
+			} else if(user.getType().equals("Admin")) {
+				path = getServletContext().getContextPath() + "/AdminHome";
+				response.sendRedirect(path);
+			}
 		}
 
 	}

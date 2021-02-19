@@ -1,10 +1,7 @@
 package it.polimi.db2.controllers;
 
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.List;
 
-import javax.ejb.EJB;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,25 +10,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.joda.time.LocalDateTime;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import it.polimi.db2.marketing.services.*;
-import it.polimi.db2.marketing.entities.*;
-
-@WebServlet("/Home")
-public class GoToHomePage extends HttpServlet {
+@WebServlet("/GoToProfilePage")
+public class GoToProfilePage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
-	/*@EJB(name = "it.polimi.db2.mission.services/MissionService")
-	private MissionService mService;
-	@EJB(name = "it.polimi.db2.mission.services/ProjectService")
-	private ProjectService pService;*/
 
-	public GoToHomePage() {
+	public GoToProfilePage() {
 		super();
 	}
 
@@ -53,29 +42,11 @@ public class GoToHomePage extends HttpServlet {
 			response.sendRedirect(loginpath);
 			return;
 		}
-		
-		
-		ProductService ps = new ProductService();
-		Product productOfTheDay = null;
-		//productOfTheDay = ps.loadProductOfTheDay();
 
-		
-		String path = "Home.html";
+		String path = "Profile.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-
-		
-		/*
-		if (productOfTheDay != null) {
-			ctx.setVariable("product", productOfTheDay);
-		} else {
-			ctx.setVariable("noProduct", "No product of the day.");
-		}*/
-		
-		
 		templateEngine.process(path, ctx, response.getWriter());
-
-
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

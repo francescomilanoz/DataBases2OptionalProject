@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.joda.time.LocalDateTime;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -22,16 +21,12 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import it.polimi.db2.marketing.services.*;
 import it.polimi.db2.marketing.entities.*;
 
-@WebServlet("/Home")
-public class GoToHomePage extends HttpServlet {
+@WebServlet("/AdminHome")
+public class GoToAdminHomePage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
-	/*@EJB(name = "it.polimi.db2.mission.services/MissionService")
-	private MissionService mService;
-	@EJB(name = "it.polimi.db2.mission.services/ProjectService")
-	private ProjectService pService;*/
 
-	public GoToHomePage() {
+	public GoToAdminHomePage() {
 		super();
 	}
 
@@ -46,36 +41,14 @@ public class GoToHomePage extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// If the user is not logged in (not present in session) redirect to the login
-		String loginpath = getServletContext().getContextPath() + "/index.html";
-		HttpSession session = request.getSession();
-		if (session.isNew() || session.getAttribute("user") == null) {
-			response.sendRedirect(loginpath);
-			return;
-		}
-		
-		
-		ProductService ps = new ProductService();
-		Product productOfTheDay = null;
-		//productOfTheDay = ps.loadProductOfTheDay();
 
-		
-		String path = "Home.html";
+
+		// Redirect to the Home page and add missions to the parameters
+		String path = "AdminHome.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 
-		
-		/*
-		if (productOfTheDay != null) {
-			ctx.setVariable("product", productOfTheDay);
-		} else {
-			ctx.setVariable("noProduct", "No product of the day.");
-		}*/
-		
-		
 		templateEngine.process(path, ctx, response.getWriter());
-
-
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

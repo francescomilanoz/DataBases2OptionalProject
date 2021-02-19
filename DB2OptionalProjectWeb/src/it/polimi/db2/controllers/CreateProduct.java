@@ -1,6 +1,7 @@
 package it.polimi.db2.controllers;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,11 +9,13 @@ import java.util.Date;
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
@@ -20,17 +23,19 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import it.polimi.db2.marketing.services.ProductService;
 import it.polimi.db2.marketing.services.UserService;
 import it.polimi.db2.marketing.entities.*;
 
-@WebServlet("/CreateUser")
-public class CreateUser extends HttpServlet {
+@WebServlet("/CreateProduct")
+@MultipartConfig
+public class CreateProduct extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	@EJB(name = "it.polimi.db2.marketing.services/UserService")
-	private UserService mService;
+	@EJB(name = "it.polimi.db2.marketing.services/ProductService")
+	private ProductService mService;
 	private TemplateEngine templateEngine;
 
-	public CreateUser() {
+	public CreateProduct() {
 		super();
 	}
 
@@ -47,18 +52,34 @@ public class CreateUser extends HttpServlet {
 			throws ServletException, IOException {
 
 		// Get and parse all parameters from request
-		String username = null;
-		String email = null;
-		String password = null;
+		String title = null;
+		byte[] image = null;
+		Date date = null;
 		boolean isBadRequest;
 		try {
-			username = StringEscapeUtils.escapeJava(request.getParameter("username"));
-			email = StringEscapeUtils.escapeJava(request.getParameter("email"));
-			password = StringEscapeUtils.escapeJava(request.getParameter("password"));
+			title = StringEscapeUtils.escapeJava(request.getParameter("productName"));
 
-			System.out.println("Username: " + username);
+			System.out.println("Titolo fatto" + title);
 			
-			isBadRequest = username.isEmpty() || email.isEmpty() || password.isEmpty();
+			
+			Part imgFile = request.getPart("productPhoto");
+			System.out.println("Foto fatto");
+			InputStream imgContent = imgFile.getInputStream();
+			System.out.println("Foto2 fatto");
+			image = it.polimi.db2.utils.ImageUtils.readImage(imgContent);
+			System.out.println("Foto3 fatto");
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			try {
+				date = (Date) sdf.parse(request.getParameter("productDate"));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println("Date fatto" + date);
+			
+
+			isBadRequest = title.isEmpty() || image.length == 0 || date.toString().isEmpty();
 		} catch (NumberFormatException | NullPointerException e) {
 			isBadRequest = true;
 			e.printStackTrace();
@@ -70,21 +91,16 @@ public class CreateUser extends HttpServlet {
 			return;
 		}
 
-		boolean usernameUnique = mService.checkUsernameUniqueness(username);
-		boolean emailUnique = mService.checkEmailUniqueness(email);
+		boolean dateUnique = mService.checkDateUniqueness(date);
 
-		if (!usernameUnique || !emailUnique) {
-			
+		if (!dateUnique) {
+
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			
-			if(!usernameUnique && !emailUnique)
-				ctx.setVariable("signUpError", "Username and E-mail already in use");
-			else if(!usernameUnique)
-				ctx.setVariable("signUpError", "Username already in use");
-			else if(!emailUnique)
-				ctx.setVariable("signUpError", "E-mail already in use");
-			path1 = "/Signup.html";
+
+			ctx.setVariable("productCreationError", "There is already a product for that date. ");
+
+			path1 = "/CreateProduct.html";
 			templateEngine.process(path1, ctx, response.getWriter());
 		}
 
@@ -92,20 +108,19 @@ public class CreateUser extends HttpServlet {
 			// Create user in DB
 			try {
 
-				mService.createUser(username, email, password);
+				mService.createProduct(title, image, date);
 
 			} catch (Exception e) {
 
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to create the user");
 				return;
 			}
-			
-			
-			// return the user to the right view 
+
+			// return the user to the right view
 			String ctxpath = getServletContext().getContextPath();
-			String path = ctxpath + "/Index";
+			String path = ctxpath + "/CreateQuestionnaire";
 			response.sendRedirect(path);
-			
+
 		}
 
 	}

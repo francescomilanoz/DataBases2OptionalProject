@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Admin Home</title>
+</head>
+<body>
+<div align="right">
+		<a th:href="@{/Logout}">Log-out</a>
+	</div>
+	<h1>Admin Home Page</h1>
+	<div>
+	
+	<a th:href="@{/CreateProductPage}">Create a new product</a>
+	<a th:href="@{/DeleteProductPage}">Delete a product</a>
+	<a th:href="@{/InspectionPage}">Statistics</a>
+		
+	</div>
+</body>
+</html>

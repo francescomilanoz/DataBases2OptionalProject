@@ -3,6 +3,7 @@
 	<persistence-unit name="DB2OptionalProjectEJB" transaction-type="JTA">
 		<jta-data-source>db_marketing_app</jta-data-source>
 		<class>it.polimi.db2.marketing.entities.User</class>
+		<class>it.polimi.db2.marketing.entities.Product</class>
 				<properties>
 			<property name="eclipselink.logging.level" value="FINE" />
 			<property name="javax.persistence.jdbc.driver"
