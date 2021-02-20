@@ -42,13 +42,11 @@ public class GoToQuestionnairePage extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-
-		// Redirect to the Home page and add missions to the parameters
-		String path = "Questionnaire.html";
-		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-
-		templateEngine.process(path, ctx, response.getWriter());
+		// return the user to the right view
+		String ctxpath = getServletContext().getContextPath();
+		String path = ctxpath + "/QuestionnaireMarketing";
+		
+		response.sendRedirect(path);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

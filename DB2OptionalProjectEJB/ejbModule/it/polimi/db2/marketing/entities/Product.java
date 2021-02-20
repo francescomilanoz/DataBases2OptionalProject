@@ -15,30 +15,29 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "product", schema = "db_marketing_app")
-@NamedQueries({@NamedQuery(name = "Product.findByDate", query = "SELECT p FROM Product p WHERE p.date= ?1"), 
-	@NamedQuery(name = "Product.checkDateUniqueness", query = "SELECT p FROM Product p  WHERE p.date = ?1")})
+@NamedQueries({@NamedQuery(name = "Product.findByDate", query = "SELECT p FROM Product p WHERE p.product_date= ?1"), 
+	@NamedQuery(name = "Product.checkDateUniqueness", query = "SELECT p FROM Product p  WHERE p.product_date = ?1")})
 
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private int product_id;
 
-	private String name;
+	private String product_name;
 	
 	@Temporal(TemporalType.DATE)
-	private Date date;
+	private Date product_date;
 	
 	@Basic(fetch = FetchType.LAZY)
 	@Lob
-	private byte[] productImage;
+	private byte[] product_image;
+
 	
-	/*
-	@OneToMany(mappedBy = "productID")
-	private List<Review> reviews;
-	*/
-	
+	@OneToMany(mappedBy="product", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true ) //FetchType.LAZY is also the default, but it's written for clearity
+	 private List<Question> questions;
+
 	
 
 
@@ -47,32 +46,32 @@ public class Product implements Serializable {
 
 
 	public Product(String name, byte[] productImage, Date date) {
-		this.name = name;
-		this.date = date;
-		this.productImage = productImage;
+		this.product_name = name;
+		this.product_date = date;
+		this.product_image = productImage;
 	}
 
 
 	public String getName() {
-		return name;
+		return product_name;
 	}
 
 
 	public void setName(String name) {
-		this.name = name;
+		this.product_name = name;
 	}
 	
 	public byte[] getProductImage() {
-		return this.productImage;
+		return this.product_image;
 	}
 	
 	public String getProductImageData() {
-		return Base64.getMimeEncoder().encodeToString(productImage);
+		return Base64.getMimeEncoder().encodeToString(product_image);
 	}
 
 
 	public void setProductImage(byte[] productImage) {
-		this.productImage = productImage;
+		this.product_image = productImage;
 	}
 	
 	

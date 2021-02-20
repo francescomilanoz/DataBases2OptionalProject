@@ -1,7 +1,9 @@
 package it.polimi.db2.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -19,11 +21,19 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.db2.marketing.services.*;
+import it.polimi.db2.marketing.utils.QuestionType;
 import it.polimi.db2.marketing.entities.*;
 
 @WebServlet("/ProductCreated")
 public class GoToProductOverviewPage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	@EJB(name = "it.polimi.db2.marketing.services/ProductService")
+	private ProductService mService;
+	
+	@EJB(name = "it.polimi.db2.marketing.services/QuestionService")
+	private QuestionService qService;
+	
 	private TemplateEngine templateEngine;
 
 	public GoToProductOverviewPage() {
@@ -45,10 +55,31 @@ public class GoToProductOverviewPage extends HttpServlet {
 		
 		HttpSession session = request.getSession(true);
 		
-		
-		
+		if(request.getParameter("Save").equals("Save")) {
+			//Check if the attribute numQuestions is defined, and then load it (to avoid NullPointerException)
+			int numQuestions = 0;
+			if(session.getAttribute("numQuestions") != null) {
+				numQuestions = (int) session.getAttribute("numQuestions");
+			}
+			
+			//Load the various questions (only if the admin hasn't deleted them)
+			Date date = new Date();
+			if(session.getAttribute("productDate") != null) {
+				date = (Date) session.getAttribute("productDate");
+			}
+			Product product = mService.loadProductByDate(date);
 
-		// Redirect to the Home page and add missions to the parameters
+			for(int i = 0; i < numQuestions; i++) {
+				String tmp = (String) session.getAttribute("question" + i);
+				if(!tmp.equals("null")) {
+					qService.createQuestion(tmp, QuestionType.MARKETING, product);
+				}
+			}	
+
+		}
+		
+	
+		// Shows the page
 		String path = "ProductOverview.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());

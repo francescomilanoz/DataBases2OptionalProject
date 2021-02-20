@@ -24,7 +24,9 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.db2.marketing.services.ProductService;
+import it.polimi.db2.marketing.services.QuestionService;
 import it.polimi.db2.marketing.services.UserService;
+import it.polimi.db2.marketing.utils.QuestionType;
 import it.polimi.db2.marketing.entities.*;
 
 @WebServlet("/CreateProduct")
@@ -33,6 +35,10 @@ public class CreateProduct extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	@EJB(name = "it.polimi.db2.marketing.services/ProductService")
 	private ProductService mService;
+	
+	@EJB(name = "it.polimi.db2.marketing.services/QuestionService")
+	private QuestionService qService;
+	
 	private TemplateEngine templateEngine;
 
 	public CreateProduct() {
@@ -115,20 +121,42 @@ public class CreateProduct extends HttpServlet {
 		}
 
 		else {
-			// Create product in DB
+			// Create product and statistical questions in DB
 			try {
+				
+				//Reset the session values 
+				
+				HttpSession session = request.getSession(true);
+				
+				int numQuestions = 0;
+				if(session.getAttribute("numQuestions") != null) {
+					numQuestions = (int) session.getAttribute("numQuestions");
+				}
+				for(int i = 0; i < numQuestions; i++) {
+					session.removeAttribute("question" + i);
+				}
+				
+				session.removeAttribute("productDate");
+				session.removeAttribute("numQuestions");
 
 				mService.createProduct(title, image, date);
+				
+				qService.createQuestion("Insert your age: ", QuestionType.STATISTICAL, mService.loadProductByDate(date));
+				qService.createQuestion("Insert your sex: ", QuestionType.STATISTICAL, mService.loadProductByDate(date));
+				qService.createQuestion("Insert your expertise level: ", QuestionType.STATISTICAL, mService.loadProductByDate(date));
+				
+				session.setAttribute("productDate", date);
 
 			} catch (Exception e) {
 
-				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to create the user");
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to create the product");
 				return;
 			}
 
 			// return the user to the right view
 			String ctxpath = getServletContext().getContextPath();
 			String path = ctxpath + "/CreateQuestionnaire";
+			
 			response.sendRedirect(path);
 
 		}

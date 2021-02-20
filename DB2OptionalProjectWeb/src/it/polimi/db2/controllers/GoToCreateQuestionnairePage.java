@@ -44,6 +44,7 @@ public class GoToCreateQuestionnairePage extends HttpServlet {
 		out.println("<title>" + title + "</title>");
 		out.println("</head>");
 		out.println("<body>");
+
 		out.println("<h1>" + title + "</h1>");
 
 		String url = request.getRequestURI().toString();
@@ -55,9 +56,11 @@ public class GoToCreateQuestionnairePage extends HttpServlet {
 			numQuestions = (int) session.getAttribute("numQuestions");
 		} else {
 			numQuestions = 0;
+		    System.out.println("ELSE CASE");
 		}
 
 		String questionText = request.getParameter("questionText");
+		System.out.println(questionText + "prev num: " + numQuestions);
 
 		ArrayList<String> questionTexts = new ArrayList<String>();
 
@@ -110,6 +113,13 @@ public class GoToCreateQuestionnairePage extends HttpServlet {
 		out.println("<form action=\"" + "/DB2OptionalProjectWeb/ProductCreated" + "\" method=GET>");
 		out.println("<fieldset>");
 		out.println("<input type=\"submit\" name=\"Save\" value=\"Save\">");
+		out.println("</fieldset>");
+		out.println("</form>");
+		
+		//Form to cancel the questionnaire
+		out.println("<form action=\"" + "/DB2OptionalProjectWeb/ProductCreated" + "\" method=GET>");
+		out.println("<fieldset>");
+		out.println("<input type=\"submit\" name=\"Save\" value=\"Skip\">");
 		out.println("</fieldset>");
 		out.println("</form>");
 

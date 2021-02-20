@@ -19,7 +19,7 @@
 <p th:text="${'Nice to see you again ' + session.user.username}"> </p>
 	
 		<div>
-		<img alt="product"
+		<img alt="product" height="300" width="300"
 			th:src="*{'data:image/png;base64,'+ product.getProductImageData()}">
 		<p th:text="${product.name}"></p>
 		<p th:text=" ${noProduct}"></p>

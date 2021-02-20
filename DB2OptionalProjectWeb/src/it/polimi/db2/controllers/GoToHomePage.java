@@ -2,6 +2,7 @@ package it.polimi.db2.controllers;
 
 import java.io.IOException;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -68,6 +69,8 @@ public class GoToHomePage extends HttpServlet {
 		if (productOfTheDay != null) {
 			ctx.setVariable("product", productOfTheDay);
 		} else {
+			Product emptyProduct = new Product("", new byte[0] , new Date());
+			ctx.setVariable("product", emptyProduct);
 			ctx.setVariable("noProduct", "No product of the day.");
 		}
 		

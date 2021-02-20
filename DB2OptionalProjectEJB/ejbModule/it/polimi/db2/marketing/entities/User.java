@@ -1,6 +1,8 @@
 package it.polimi.db2.marketing.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+
 import javax.persistence.*;
 //import java.util.List;
 
@@ -19,7 +21,7 @@ public class User implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private int user_id;
 
 	private String email;
 
@@ -32,22 +34,9 @@ public class User implements Serializable {
 	private int points;
 	
 	private String type;
-
-	// Bidirectional many-to-one association to Mission
-	/*
-	 * Fetch type EAGER allows resorting the relationship list content also in the
-	 * client Web servlet after the creation of a new mission. If you leave the
-	 * default LAZY policy, the relationship is sorted only at the first access but
-	 * then adding a new mission does not trigger the reloading of data from the
-	 * database and thus the sort method in the client does not actually re-sort the
-	 * list of missions. MERGE is not cascaded because we will modify and merge only
-	 * username and surname attributes of the user and do not want to cascade
-	 * detached changes to relationship.
-	 */
-	/*@OneToMany(fetch = FetchType.EAGER, mappedBy = "reporter", cascade = { CascadeType.PERSIST, CascadeType.REMOVE,
-			CascadeType.REFRESH })
-	@OrderBy("date DESC")
-	private List<Mission> missions;*/
+	
+	@OneToMany(mappedBy="user") //When a user account is deleted, the relative login records still remain in the database. 
+	private ArrayList<LoginRecord> loginRecords;
 
 	public User() {
 	}
@@ -62,11 +51,11 @@ public class User implements Serializable {
 	}
 
 	public int getId() {
-		return this.id;
+		return this.user_id;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		this.user_id = id;
 	}
 
 	public String getPassword() {

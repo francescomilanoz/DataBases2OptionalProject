@@ -38,6 +38,23 @@ public class ProductService {
 		products = em.createNamedQuery("Product.findByDate", Product.class).setParameter(1, date)
 				.getResultList();
 		
+		if(products.size() == 0) {
+			return null;
+		}
+		
+		return products.get(0);
+	}
+	
+	
+	public Product loadProductByDate(Date date) {
+		List<Product> products = new ArrayList<>();
+		products = em.createNamedQuery("Product.findByDate", Product.class).setParameter(1, date)
+				.getResultList();
+		
+		if(products.size() == 0) {
+			return null;
+		}
+		
 		return products.get(0);
 	}
 	
@@ -60,7 +77,7 @@ public class ProductService {
 	public void createProduct(String title, byte[] image, Date date) {
 		Product product = new Product(title, image, date);
 		
-		em.persist(product); // makes also mission object managed via cascading
+		em.persist(product); // makes also product object managed via cascading
 	}
 	
 	

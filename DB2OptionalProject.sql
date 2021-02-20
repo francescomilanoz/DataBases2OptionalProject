@@ -122,10 +122,10 @@ CREATE TABLE `review` (
 -- Table structure for table `login`
 --
 
-DROP TABLE IF EXISTS `login`;
+DROP TABLE IF EXISTS `login_record`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `login` (
+CREATE TABLE `login_record` (
   `login_id` int NOT NULL AUTO_INCREMENT,
   `login_date` date NOT NULL,
   `login_time` time NOT NULL,
