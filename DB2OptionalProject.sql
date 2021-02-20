@@ -127,8 +127,7 @@ DROP TABLE IF EXISTS `login_record`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `login_record` (
   `login_id` int NOT NULL AUTO_INCREMENT,
-  `login_date` date NOT NULL,
-  `login_time` time NOT NULL,
+  `login_timestamp` timestamp NOT NULL,
   `user_id` int NOT NULL,
   PRIMARY KEY (`login_id`), 
   CONSTRAINT `login_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
