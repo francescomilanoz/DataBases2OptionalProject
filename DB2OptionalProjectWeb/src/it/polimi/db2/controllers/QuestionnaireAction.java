@@ -2,10 +2,8 @@ package it.polimi.db2.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,21 +17,12 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import it.polimi.db2.marketing.services.*;
-import it.polimi.db2.marketing.entities.*;
-
-@WebServlet("/Home")
-public class GoToHomePage extends HttpServlet {
+@WebServlet("/QuestionnaireAction")
+public class QuestionnaireAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 
-	@EJB(name = "it.polimi.db2.marketing.services/ProductService")
-	private ProductService pService;
-
-	@EJB(name = "it.polimi.db2.marketing.services/ReviewService")
-	private ReviewService rService;
-	
-	public GoToHomePage() {
+	public QuestionnaireAction() {
 		super();
 	}
 
@@ -56,51 +45,38 @@ public class GoToHomePage extends HttpServlet {
 			return;
 		}
 		
+		if(request.getAttribute("decision") == null)
+			System.out.println("era null");
+		else
+			System.out.println(request.getAttribute("decision"));
 		
-		// Product of the day
-		Product productOfTheDay = null;
-		productOfTheDay = pService.loadProductOfTheDay();
-		session.setAttribute("productOfTheDay", productOfTheDay);
+		if(request.getAttribute("decision") != null) {
+			
+			if(request.getAttribute("decision").equals("Previous")) {
+				List<String> answers = new ArrayList<String>();
+			
+			    answers.add((String) request.getParameter("age"));
+			    answers.add((String) request.getParameter("gender"));
+			    answers.add((String) request.getParameter("expertiseLevel"));
+			
+				session.setAttribute("statisticalAnswers", answers);
+				
+				// return the user to the right view
+				String ctxpath = getServletContext().getContextPath();
+				String path = ctxpath + "/QuestionnaireMarketing";
+				
+				response.sendRedirect(path);
 	
-
-		
-		String path = "Home.html";
-		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-
-		
-		
-		if (productOfTheDay != null) {
-			ctx.setVariable("product", productOfTheDay);
-		} else {
-			Product emptyProduct = new Product("", new byte[0] , new Date());
-			ctx.setVariable("product", emptyProduct);
-			ctx.setVariable("noProduct", "No product of the day.");
-		}
-	
-		//Reviews of the Product of the day
-		List<Review> reviews = new ArrayList<>();
-		reviews = rService.loadReviewByProduct(productOfTheDay);
-		
-		for(int i = 0; i < reviews.size(); i++) {
-			String tmp = reviews.get(i).getReview_text();
-			tmp.replaceAll("\n",",");
-			tmp.replaceAll("\r",",");
-			reviews.get(i).setReview_text(tmp);
+			}
 		}
 		
-		System.out.println(reviews.get(0).getReview_text());
 		
-		if (reviews.size() != 0) {
-			ctx.setVariable("reviews", reviews);
-		} else {
-			ctx.setVariable("reviews", reviews);
-			ctx.setVariable("noReviews", "No reviews for the product of the day.");
-		}
-		
-		templateEngine.process(path, ctx, response.getWriter());
-
-
+			/*
+			String path2 = "Profile.html";
+			ServletContext servletContext = getServletContext();
+			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+			templateEngine.process(path2, ctx, response.getWriter());
+			*/
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

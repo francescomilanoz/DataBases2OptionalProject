@@ -62,14 +62,14 @@ public class CreateReview extends HttpServlet {
 		System.out.println(session);
 		
 		User user = (User) session.getAttribute("user");
-		Product product = (Product) session.getAttribute("product");
+		Product product = (Product) session.getAttribute("productOfTheDay");
 		System.out.println(user);
 		System.out.println(product);
 		
 		try {
 			rService.createReview(review_text, user, product);
 		} catch (Exception e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to create mission");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to create review");
 			return;
 		}
 

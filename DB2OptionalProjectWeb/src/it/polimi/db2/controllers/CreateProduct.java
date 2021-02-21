@@ -142,7 +142,7 @@ public class CreateProduct extends HttpServlet {
 				mService.createProduct(title, image, date);
 				
 				qService.createQuestion("Insert your age: ", QuestionType.STATISTICAL, mService.loadProductByDate(date));
-				qService.createQuestion("Insert your sex: ", QuestionType.STATISTICAL, mService.loadProductByDate(date));
+				qService.createQuestion("Insert your gender: ", QuestionType.STATISTICAL, mService.loadProductByDate(date));
 				qService.createQuestion("Insert your expertise level: ", QuestionType.STATISTICAL, mService.loadProductByDate(date));
 				
 				session.setAttribute("productDate", date);

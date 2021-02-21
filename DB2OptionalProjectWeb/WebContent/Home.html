@@ -6,20 +6,20 @@
 <link rel="stylesheet" type="text/css" media="all"
 	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
 </head>
-<body>	
-	
+<body>
+
 	<div align="right">
 		<a th:href="@{/GoToProfilePage}">Your Profile</a>
 	</div>
-	
-<div align="right">
+
+	<div align="right">
 		<a th:href="@{/Logout}">Log-out</a>
 	</div>
 
 	<h1>Welcome!</h1>
-		
-<p th:text="${'Nice to see you again ' + session.user.username}"> </p>
-	
+
+	<p th:text="${'Nice to see you again ' + session.user.username}"></p>
+
 	<div>
 		<img alt="product" height="300" width="300"
 			th:src="*{'data:image/png;base64,'+ product.getProductImageData()}">
@@ -28,34 +28,34 @@
 	</div>
 
 	<a th:href="@{/Questionnaire}">Go To Questionnaire</a>
-	
+
 	<table>
 		<thead>
 			<tr>
-				<!--<th>User</th>-->
+				<th>User</th>
 				<th>Review</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr th:each="r : ${reviews}">
-				<td th:text="${r.user.getUsername()}"></td>
+			 <td th:text="${r.user.getUsername()}"></td> 	
 				<td th:text="${r.review_text}"></td>
 			</tr>
 		</tbody>
 	</table>
-	
+
 	<div>
 		<p th:text=" ${noReviews}"></p>
 	</div>
-	
+
 	<div>
 		<p>Complete the form to create a review</p>
 		<form action="#" th:action="@{/CreateReview}" method="POST">
 			<fieldset>
 				<p>
-					Review: <input type="text" name="review" required />
+					Review: <textarea id="review" name="review" rows="4" cols="50" required></textarea>
 				</p>
-				<input type="submit" name="Create Review">
+				<input type="submit" name="Create Review" value="Create Review">
 			</fieldset>
 		</form>
 	</div>

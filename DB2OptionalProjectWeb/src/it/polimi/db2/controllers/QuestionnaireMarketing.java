@@ -70,13 +70,28 @@ public class QuestionnaireMarketing extends HttpServlet {
 		Product product = pService.loadProductOfTheDay();
 		questions = qService.loadQuestionsByProductAndType(product, QuestionType.MARKETING);
 		
-		out.println("<form action=\"" + request.getRequestURI() + "\" method=POST>");
+		session.setAttribute("productOfTheDay", product);
+		
+		out.println("<form action=\"" + "/DB2OptionalProjectWeb/QuestionnaireStatistical" + "\" method=GET>");
+		
+		List<String> answers = new ArrayList<String>();
+		answers = (List<String>) session.getAttribute("marketingQuestions");
+		
+		if(answers != null)
+			System.out.println(answers.get(0));
 		
 		for(int i = 0; i < questions.size(); i++) {
 			out.println(questions.get(i).getQuestion_text() + "  ");
-			out.println("<input type=\"text\" name=\"username\" required>");
+			out.println("<input type=\"text\" name=\"answer"+i+"\"");
+			
+			if(answers != null) {
+				out.println(" value=\"" + answers.get(i) + "\"");
+			}
+			
+			out.println( " required>");
 			out.println("<br>");
 		}
+		out.println("<input type=\"hidden\" name=\"NumberOfAnswers\" value=\""+questions.size()+"\">");
 		out.println("<input type=\"submit\" name=\"Next\" value=\"Next\">");
 		out.println("</form>");
 

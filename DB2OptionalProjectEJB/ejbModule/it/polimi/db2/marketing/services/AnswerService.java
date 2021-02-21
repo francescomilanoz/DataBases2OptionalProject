@@ -1,5 +1,6 @@
 package it.polimi.db2.marketing.services;
 
+import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -8,7 +9,7 @@ import it.polimi.db2.marketing.entities.Answer;
 import it.polimi.db2.marketing.entities.Question;
 import it.polimi.db2.marketing.entities.User;
 
-@Stateless
+@Stateful
 public class AnswerService {
 	@PersistenceContext(unitName = "DB2OptionalProjectEJB")
 	private EntityManager em;
