@@ -45,25 +45,32 @@ public class QuestionnaireAction extends HttpServlet {
 			return;
 		}
 		
-		if(request.getAttribute("decision") == null)
+		if(request.getParameter("decision") == null)
 			System.out.println("era null");
 		else
-			System.out.println(request.getAttribute("decision"));
+			System.out.println(request.getParameter("decision"));
 		
-		if(request.getAttribute("decision") != null) {
+		if(request.getParameter("decision") != null) {
 			
-			if(request.getAttribute("decision").equals("Previous")) {
+			if(request.getParameter("decision").equals("Previous")) {
+				
+				System.out.println("entrato correttamente");
+				
 				List<String> answers = new ArrayList<String>();
 			
 			    answers.add((String) request.getParameter("age"));
 			    answers.add((String) request.getParameter("gender"));
 			    answers.add((String) request.getParameter("expertiseLevel"));
+			    
+				System.out.println("entrato correttamente 2");
 			
 				session.setAttribute("statisticalAnswers", answers);
 				
 				// return the user to the right view
 				String ctxpath = getServletContext().getContextPath();
 				String path = ctxpath + "/QuestionnaireMarketing";
+				
+				System.out.println("entrato correttamente 3");
 				
 				response.sendRedirect(path);
 	

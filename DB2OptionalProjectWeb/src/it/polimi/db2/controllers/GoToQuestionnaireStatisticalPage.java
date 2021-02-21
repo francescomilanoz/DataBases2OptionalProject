@@ -91,10 +91,14 @@ public class GoToQuestionnaireStatisticalPage extends HttpServlet {
 		else {
 			
 			ageCompiled = "true";
-			List<String> statisticalQuestionsPreCompiled = new ArrayList<String>();
-			ageValue = statisticalQuestionsPreCompiled.get(0);
+			List<String> statisticalQuestionsPreCompiled = (List<String>) session.getAttribute("statisticalAnswers");
+			
+			if(statisticalQuestionsPreCompiled.size() > 0)
+				ageValue = statisticalQuestionsPreCompiled.get(0);
 			
 		}
+		
+		System.out.println(ageValue);
 		
 		ctx.setVariable("ageCompiled", ageCompiled);
 		ctx.setVariable("ageValue", ageValue);

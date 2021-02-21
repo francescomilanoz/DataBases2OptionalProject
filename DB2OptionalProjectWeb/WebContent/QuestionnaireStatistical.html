@@ -17,13 +17,13 @@
 
 
 				<div th:if="${ageCompiled}=='false'">
-					<p th:text=" ${age}"></p>
-					<input type="number" name="age" min="14" />
+					<p th:text= "${age}"></p>
+					<input type="text" name="age" min="14">
 				</div>
 
 				<div th:if="${ageCompiled}=='true'">
 					<p th:text=" ${age}"></p>
-					<input type="number" name="age" min="14" value= ${ageValue}/>
+					<input type="text" name="age" min="14" value= "${ageValue}">
 				</div>
 
 
@@ -44,8 +44,8 @@
 
 
 				<p>
-					<input type="submit" name="decision" value="Previous"> <input
-						type="submit" name="decision" value="Submit"> <input
+				<input type="submit" name="decision" value="Submit">
+					<input type="submit" name="decision" value="Previous">  <input
 						type="submit" name="decision" value="Cancel">
 				</p>
 
