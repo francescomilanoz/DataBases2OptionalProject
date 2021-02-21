@@ -1,34 +1,24 @@
 package it.polimi.db2.controllers;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
-
-import org.apache.commons.lang.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.db2.marketing.services.ProductService;
 import it.polimi.db2.marketing.services.QuestionService;
-import it.polimi.db2.marketing.services.UserService;
 import it.polimi.db2.marketing.utils.QuestionType;
 import it.polimi.db2.marketing.entities.*;
 
@@ -57,12 +47,11 @@ public class QuestionnaireMarketing extends HttpServlet {
 		templateResolver.setSuffix(".html");
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		String title = "Please fill this questionnaire: ";
+		String title = "First Section. Please, answer the following questions: ";
 		HttpSession session = request.getSession(true);
 		
 		out.println("<!DOCTYPE html>");
@@ -84,8 +73,9 @@ public class QuestionnaireMarketing extends HttpServlet {
 		out.println("<form action=\"" + request.getRequestURI() + "\" method=POST>");
 		
 		for(int i = 0; i < questions.size(); i++) {
-			out.print(questions.get(i).getQuestion_text() + "  ");
-			out.println("<input type=\"text\" name=\"questionText\">");
+			out.println(questions.get(i).getQuestion_text() + "  ");
+			out.println("<input type=\"text\" name=\"username\" required>");
+			out.println("<br>");
 		}
 		out.println("<input type=\"submit\" name=\"Next\" value=\"Next\">");
 		out.println("</form>");

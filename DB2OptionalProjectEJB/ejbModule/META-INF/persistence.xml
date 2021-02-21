@@ -6,6 +6,8 @@
 		<class>it.polimi.db2.marketing.entities.Product</class>
 		<class>it.polimi.db2.marketing.entities.Question</class>
 		<class>it.polimi.db2.marketing.entities.LoginRecord</class>
+		<class>it.polimi.db2.marketing.entities.Answer</class>
+		<class>it.polimi.db2.marketing.entities.Review</class>
 				<properties>
 			<property name="eclipselink.logging.level" value="FINE" />
 			<property name="javax.persistence.jdbc.driver"
