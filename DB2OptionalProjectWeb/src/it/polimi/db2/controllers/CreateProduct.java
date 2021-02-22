@@ -25,9 +25,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.db2.marketing.services.ProductService;
 import it.polimi.db2.marketing.services.QuestionService;
-import it.polimi.db2.marketing.services.UserService;
 import it.polimi.db2.marketing.utils.QuestionType;
-import it.polimi.db2.marketing.entities.*;
 
 @WebServlet("/CreateProduct")
 @MultipartConfig

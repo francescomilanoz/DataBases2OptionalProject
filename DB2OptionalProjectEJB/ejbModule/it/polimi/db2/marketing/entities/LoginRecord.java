@@ -1,11 +1,7 @@
 package it.polimi.db2.marketing.entities;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.util.Base64;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.*;
 //import java.util.List;
