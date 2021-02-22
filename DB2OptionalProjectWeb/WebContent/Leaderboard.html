@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Home</title>
+<link rel="stylesheet" type="text/css" media="all"
+	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+</head>
+<body>
+
+	<div align="right">
+		<a th:href="@{/Logout}">Logout</a>
+		<a th:href="@{/Home}">Home</a>
+	</div>
+	<h1>Leaderboard: </h1>
+	<p
+		th:text="${'Check your position, ' + session.user.username + '!'}"></p>
+		
+	
+
+	<table>
+		<thead>
+			<tr>
+				<th>Username</th>
+				<th>Points</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="l : ${leaderboards}">
+				<td th:text="${l.getUser().getUsername()}"></td>
+				<td th:text="${l.getDaily_points()}"></td>
+			</tr>
+		</tbody>
+	</table>
+	<p th:text=" ${noLeaderboard}"></p>
+
+</body>
+</html>

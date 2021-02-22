@@ -35,8 +35,11 @@ public class User implements Serializable {
 	
 	private String type;
 	
+
+	/*
 	@OneToMany(mappedBy="user") //When a user account is deleted, the relative login records still remain in the database. 
 	private ArrayList<LoginRecord> loginRecords;
+	*/
 
 	public User() {
 	}
@@ -105,20 +108,5 @@ public class User implements Serializable {
 	public void setType(String type) {
 		this.type = type;
 	}
-
-	/*public List<Mission> getMissions() {
-		return this.missions;
-	}
-
-	public void addMission(Mission mission) {
-		getMissions().add(mission);
-		mission.setReporter(this);
-		// aligns both sides of the relationship
-		// if mission is new, invoking persist() on user cascades also to mission
-	}
-
-	public void removeMission(Mission mission) {
-		getMissions().remove(mission);
-	}*/
 
 }

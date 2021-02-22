@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Greetings</title>
+<link rel="stylesheet" type="text/css" media="all"
+	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+</head>
+<body>
+
+	<div align="right">
+		<a th:href="@{/GoToProfilePage}">Your Profile</a>
+	</div>
+
+	<div align="right">
+		<a th:href="@{/Logout}">Log-out</a>
+	</div>
+
+	<h1>Questionnaire successfully submitted</h1>
+	
+	<p>Thanks for having completed the questionnaire of the day! </p>
+
+	<div>
+	    <p>Here it is your score: </p>
+		<p th:text="${dailyPoints}"></p>
+	<!-- 	<p th:text="${user.points}"></p> -->
+	</div>
+
+	<a th:href="@{/Leaderboard}">Go To Leaderboard</a>
+
+</body>
+</html>

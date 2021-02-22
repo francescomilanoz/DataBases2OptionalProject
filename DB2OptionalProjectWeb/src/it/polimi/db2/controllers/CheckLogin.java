@@ -17,7 +17,6 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import it.polimi.db2.marketing.services.LoginRecordService;
 import it.polimi.db2.marketing.services.UserService;
 import it.polimi.db2.marketing.entities.User;
 import it.polimi.db2.marketing.exceptions.CredentialsException;
@@ -30,8 +29,8 @@ public class CheckLogin extends HttpServlet {
 	@EJB(name = "it.polimi.db2.marketing.services/UserService")
 	private UserService usrService;
 	
-	@EJB(name = "it.polimi.db2.marketing.services/LoginRecordService")
-	private LoginRecordService lService;
+	//@EJB(name = "it.polimi.db2.marketing.services/LoginRecordService")
+	//private LoginRecordService lService;
 
 	public CheckLogin() {
 		super();
@@ -90,7 +89,7 @@ public class CheckLogin extends HttpServlet {
 			request.getSession().setAttribute("user", user);
 			if(user.getType().equals("User") && user.isActive()) {
 			
-			lService.createLoginRecord(new Date(), user);
+			//lService.createLoginRecord(new Date(), user);
 			
 			path = getServletContext().getContextPath() + "/Home";
 			response.sendRedirect(path);

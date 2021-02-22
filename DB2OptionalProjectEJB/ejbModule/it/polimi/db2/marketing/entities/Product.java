@@ -38,6 +38,9 @@ public class Product implements Serializable {
 	 private List<Question> questions;
 
 	
+	@OneToMany(mappedBy="product", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true ) //FetchType.LAZY is also the default, but it's written for clearity
+	 private List<Answer> answers;
+	
 
 
 	public Product() {

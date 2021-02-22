@@ -1,6 +1,8 @@
 package it.polimi.db2.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
@@ -18,17 +20,16 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.db2.marketing.entities.Leaderboard;
 import it.polimi.db2.marketing.entities.Product;
-import it.polimi.db2.marketing.entities.User;
 import it.polimi.db2.marketing.services.LeaderboardService;
 
-@WebServlet("/Questionnaire")
-public class GoToQuestionnairePage extends HttpServlet {
+@WebServlet("/Leaderboard")
+public class GoToLeaderboard extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	@EJB(name = "it.polimi.db2.marketing.services/LeaderboardService")
 	private LeaderboardService lService;
 
-	public GoToQuestionnairePage() {
+	public GoToLeaderboard()  {
 		super();
 	}
 
@@ -43,30 +44,26 @@ public class GoToQuestionnairePage extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		
 		HttpSession session = request.getSession();
+		
+		List<Leaderboard> leaderboardsOfTheDay = new ArrayList<>();
+		leaderboardsOfTheDay = lService.loadLeaderboardByProductOrderByPoints((Product) session.getAttribute("productOfTheDay"));
 
-		Leaderboard leaderboard = lService.loadLeaderboardByUserAndProduct((User) session.getAttribute("user"),
-				(Product) session.getAttribute("productOfTheDay"));
 
-		if (leaderboard == null) {
-			// return the user to the right view
-			String ctxpath = getServletContext().getContextPath();
-			String path = ctxpath + "/QuestionnaireMarketing";
-			response.sendRedirect(path);
-		}
+		// Redirect to the leaderboard page
+		String path = "Leaderboard.html";
+		ServletContext servletContext = getServletContext();
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());		
+		
+		
+		if(leaderboardsOfTheDay == null)
+			ctx.setVariable("noLeaderboard", "No one has submitted the questionnaire. Be the first!");
 		else {
-			String path = "QuestionnaireAlreadyFilled.html";
-			ServletContext servletContext = getServletContext();
-			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			
-			if(leaderboard.getDaily_points() == -1)
-				ctx.setVariable("questionnaireResponse", "Sorry, you can't submit the questionnare after having deleted it! Return tomorrow.");
-			else
-				ctx.setVariable("questionnaireResponse", "You have already filled the questionnaire of today! Return tomorrow.");
-			templateEngine.process(path, ctx, response.getWriter());
+			ctx.setVariable("leaderboards", leaderboardsOfTheDay);
 		}
 
+		templateEngine.process(path, ctx, response.getWriter());
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

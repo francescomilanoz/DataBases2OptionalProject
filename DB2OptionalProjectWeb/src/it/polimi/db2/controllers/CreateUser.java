@@ -85,6 +85,7 @@ public class CreateUser extends HttpServlet {
 			// Create user in DB
 			try {
 
+				System.out.println("creo lo user");
 				mService.createUser(username, email, password);
 
 			} catch (Exception e) {
