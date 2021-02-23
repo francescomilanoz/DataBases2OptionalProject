@@ -27,6 +27,7 @@ import it.polimi.db2.marketing.services.AnswerService;
 import it.polimi.db2.marketing.services.LeaderboardService;
 import it.polimi.db2.marketing.services.OffensiveWordService;
 import it.polimi.db2.marketing.services.QuestionService;
+import it.polimi.db2.marketing.services.UserService;
 import it.polimi.db2.marketing.utils.QuestionType;
 
 @WebServlet("/QuestionnaireAction")
@@ -44,6 +45,9 @@ public class QuestionnaireAction extends HttpServlet {
 	
 	@EJB(name = "it.polimi.db2.marketing.services/OffensiveWordService")
 	private OffensiveWordService oService;
+	
+	@EJB(name = "it.polimi.db2.marketing.services/UserService")
+	private UserService uService;
 
 	public QuestionnaireAction() {
 		super();
@@ -158,7 +162,13 @@ public class QuestionnaireAction extends HttpServlet {
 					}
 					
 					//Load the new points obtained by the user. 
-					int dailyPoints = lService.loadLeaderboardByUserAndProduct(loggedUser, productOfTheDay).getDaily_points();
+					int dailyPoints = 0;
+					if(lService.loadLeaderboardByUserAndProduct(loggedUser, productOfTheDay) != null)
+						dailyPoints = lService.loadLeaderboardByUserAndProduct(loggedUser, productOfTheDay).getDaily_points();
+					
+					if(dailyPoints == 0) {
+						lService.createLeaderboard(new Date(), 0, loggedUser, productOfTheDay);
+					}
 								
 					
 					String path2 = "Greetings.html";
@@ -170,7 +180,7 @@ public class QuestionnaireAction extends HttpServlet {
 				
 				else { //An offensive word is found!
 					
-					loggedUser.setActive(false);
+					uService.blockUser(loggedUser);
 					
 					// return the user to the index page
 					String ctxpath = getServletContext().getContextPath();

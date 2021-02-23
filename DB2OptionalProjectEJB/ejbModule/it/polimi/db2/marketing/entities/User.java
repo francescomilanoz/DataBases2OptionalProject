@@ -14,7 +14,8 @@ import javax.persistence.*;
 @Table(name = "user", schema = "db_marketing_app")
 @NamedQueries({@NamedQuery(name = "User.checkCredentials", query = "SELECT r FROM User r  WHERE r.username = ?1 and r.password = ?2"), 
 			   @NamedQuery(name = "User.checkUsernameUniqueness", query = "SELECT r FROM User r  WHERE r.username = ?1"),
-			   @NamedQuery(name = "User.checkEmailUniqueness", query = "SELECT r FROM User r  WHERE r.email = ?1")})
+			   @NamedQuery(name = "User.checkEmailUniqueness", query = "SELECT r FROM User r  WHERE r.email = ?1"), 
+			   @NamedQuery(name = "User.blockUser", query = "UPDATE User u SET u.active = False WHERE u.username = ?1")})
 
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;

@@ -12,11 +12,7 @@
 		<a th:href="@{/AdminHome}">Back</a>
 		<a th:href="@{/Logout}">Logout</a>
 	</div>
-	<h1>Login Records: </h1>
-<!--  	<p
-		th:text="${'Check your position, ' + session.user.username + '!'}"></p>
-		-->
-	
+	<h1>Login Records: </h1>	
 
 	<table>
 		<thead>
@@ -26,7 +22,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr th:each="lr : loginRecords">
+			<tr th:each="lr : ${loginRecords}">
 				<td th:text="${lr.getUser().getUsername()}"></td>
 				<td th:text="${lr.getLogin_timestamp()}"></td>
 			</tr>

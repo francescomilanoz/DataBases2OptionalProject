@@ -1,6 +1,8 @@
 package it.polimi.db2.controllers;
 
 import java.io.IOException;
+import java.util.StringTokenizer;
+
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,7 +13,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
+import it.polimi.db2.marketing.services.OffensiveWordService;
 import it.polimi.db2.marketing.services.ReviewService;
+import it.polimi.db2.marketing.services.UserService;
 import it.polimi.db2.marketing.entities.*;
 
 @WebServlet("/CreateReview")
@@ -19,6 +23,13 @@ public class CreateReview extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	@EJB(name = "it.polimi.db2.marketing.services/ReviewService")
 	private ReviewService rService;
+	
+	@EJB(name = "it.polimi.db2.marketing.services/OffensiveWordService")
+	private OffensiveWordService oService;
+	
+	@EJB(name = "it.polimi.db2.marketing.services/UserService")
+	private UserService uService;
+
 
 	
 	public CreateReview() {
@@ -65,7 +76,32 @@ public class CreateReview extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect or missing param values");
 			return;
 		}
-
+		
+		
+		//Check if the review contains an offensive word
+		boolean offensiveWordFound = false;
+		
+		String reviewTextElaborated = review_text;
+		
+		reviewTextElaborated = reviewTextElaborated.toLowerCase();
+		
+		reviewTextElaborated = reviewTextElaborated.replaceAll("[^a-zA-Z0-9]", " ");
+		reviewTextElaborated = reviewTextElaborated.replaceAll("\\s+", " ");
+		
+		System.out.println("stringa elaborata: " + reviewTextElaborated);
+		
+		StringTokenizer st = new StringTokenizer(reviewTextElaborated);
+	     while (st.hasMoreTokens()) {
+	         //System.out.println(st.nextToken());
+	         if(oService.isAnOffensiveWord(st.nextToken())) {
+	        	 offensiveWordFound = true;
+	        	 break;
+	         }
+	     }
+		
+		
+		if(!offensiveWordFound) {
+			
 		// Create review in DB
 		System.out.println(session);
 		
@@ -85,6 +121,18 @@ public class CreateReview extends HttpServlet {
 		String ctxpath = getServletContext().getContextPath();
 		String path = ctxpath + "/Home";
 		response.sendRedirect(path);
+		} else {
+			//An offensive word is found!
+			
+			uService.blockUser((User) session.getAttribute("user"));
+			
+			// return the user to the index page
+			String ctxpath = getServletContext().getContextPath();
+			String path = ctxpath + "/Logout";
+
+			response.sendRedirect(path);
+		}
+
 		}
 	}
 

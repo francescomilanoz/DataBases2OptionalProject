@@ -70,9 +70,6 @@ public class GoToQuestionnaireStatisticalPage extends HttpServlet {
 		session.setAttribute("marketingQuestions", answers);
 		
 		
-		if(answers != null)
-			System.out.println(answers.get(0));
-		
 		List<Question> statisticalQuestions = new ArrayList<Question>();
 		statisticalQuestions = qService.loadQuestionsByProductAndType((Product) session.getAttribute("productOfTheDay"), QuestionType.STATISTICAL);
 		

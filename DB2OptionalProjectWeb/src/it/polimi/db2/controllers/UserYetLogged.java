@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
@@ -23,19 +24,17 @@ import it.polimi.db2.marketing.entities.User;
 import it.polimi.db2.marketing.exceptions.CredentialsException;
 import javax.persistence.NonUniqueResultException;
 
-@WebServlet("/CheckLogin")
-public class CheckLogin extends HttpServlet {
+@WebServlet("/UserYetLogged")
+public class UserYetLogged extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	@EJB(name = "it.polimi.db2.marketing.services/UserService")
 	private UserService usrService;
 	
-	
-	
 	@EJB(name = "it.polimi.db2.marketing.services/LoginRecordService")
 	private LoginRecordService lService;
 
-	public CheckLogin() {
+	public UserYetLogged() {
 		super();
 	}
 
@@ -48,62 +47,29 @@ public class CheckLogin extends HttpServlet {
 		templateResolver.setSuffix(".html");
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// obtain and escape params
-		String usrn = null;
-		String pwd = null;
-		try {
-			usrn = StringEscapeUtils.escapeJava(request.getParameter("username"));
-			pwd = StringEscapeUtils.escapeJava(request.getParameter("pwd"));
-			
-			System.out.println(usrn);
-			System.out.println(pwd);
-			if (usrn == null || pwd == null || usrn.isEmpty() || pwd.isEmpty()) {
-				throw new Exception("Missing or empty credential value");
-			}
-
-		} catch (Exception e) {
-			// for debugging only e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing credential value");
-			return;
-		}
-		User user;
-		try {
-			// query db to authenticate for user
-			user = usrService.checkCredentials(usrn, pwd);
-		} catch (CredentialsException | NonUniqueResultException e) {
-			e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Could not check credentials");
-			return;
-		}
-
-		// If the user exists, add info to the session and go to home page, otherwise
-		// show login page with error message
-
+		
+		HttpSession session = request.getSession();
 		String path;
-		if (user == null) {
-			ServletContext servletContext = getServletContext();
-			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			ctx.setVariable("errorMsg", "Incorrect username or password");
-			path = "/index.html";
-			templateEngine.process(path, ctx, response.getWriter());
-		} else {
-			request.getSession().setAttribute("user", user);
-			if(user.getType().equals("User") && user.isActive()) {
+		if((User) session.getAttribute("user") != null) {
 			
-			lService.createLoginRecord(new Date(), user);
+			User loggedUser = (User) session.getAttribute("user");
+			
+			if(loggedUser.getType().equals("User") && loggedUser.isActive()) {
+				
+			lService.createLoginRecord(new Date(), loggedUser);
 			
 			path = getServletContext().getContextPath() + "/Home";
 			response.sendRedirect(path);
 			
-			} else if(user.getType().equals("User") && !user.isActive()) {
+			} else if(loggedUser.getType().equals("User") && !loggedUser.isActive()) {
 				ServletContext servletContext = getServletContext();
 				final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 				ctx.setVariable("errorMsg", "Sorry, your account has been banned.");
 				path = "/index.html";
 				templateEngine.process(path, ctx, response.getWriter());
-			} else if(user.getType().equals("Admin")) {
+			} else if(loggedUser.getType().equals("Admin")) {
 				path = getServletContext().getContextPath() + "/AdminHome";
 				response.sendRedirect(path);
 			}

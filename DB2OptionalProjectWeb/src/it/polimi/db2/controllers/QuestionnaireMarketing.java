@@ -77,8 +77,10 @@ public class QuestionnaireMarketing extends HttpServlet {
 		List<String> answers = new ArrayList<String>();
 		answers = (List<String>) session.getAttribute("marketingQuestions");
 		
-		if(answers != null)
-			System.out.println(answers.get(0));
+		if(questions.size() == 0) {
+			out.println("The admin has not set any Marketing questions for the product of the day. Please go to the next section to answer some statistical optional questions. <br><br>");
+		}
+		
 		
 		for(int i = 0; i < questions.size(); i++) {
 			out.println(questions.get(i).getQuestion_text() + "  ");

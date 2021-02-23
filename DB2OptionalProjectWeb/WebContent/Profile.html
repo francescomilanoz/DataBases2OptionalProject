@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Profile</title>
+<title>Your profile</title>
 </head>
 <body>
 	<div align="right">
 		<a th:href="@{/Home}">Home</a>
 	</div>
-	<h1>Update your profile</h1>
+	<h1>Your profile</h1>
 	<div>
 	
 	<!-- 
@@ -18,6 +18,20 @@
 			<button type="submit" name="action" value="submit">Update Profile</button>
 		</form>
 	 -->
+	 
+	 	Username: <b th:text=" ${UserUsername}"></b> <br>
+	 	Email: 	<b th:text=" ${UserEmail}"></b> <br>
+	 	Password: <b th:text=" ${UserPassword}"></b>
+	 	
+	 	<form action="#" th:action="@{/GoToProfilePage}" method="POST">
+				<fieldset>
+					<input type="submit" name="ShowHide" value="Show/Hide">
+				</fieldset>
+			</form> <br>
+	 	
+	 	Total Points: <b th:text=" ${UserPoints}"></b> <br>
+	 	
+	 	
 
 		
 	</div>

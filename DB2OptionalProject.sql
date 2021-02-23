@@ -41,7 +41,7 @@ CREATE TABLE `user` (
 
  LOCK TABLES `user` WRITE;
  /*!40000 ALTER TABLE `user` DISABLE KEYS */;
- INSERT INTO `user` VALUES (1, 'admin', 'admin', 'admin', true, 100, 'Admin'), (2, 'user', 'user', 'user', true, 50, 'User');
+ INSERT INTO `user` VALUES (1, 'admin', 'admin', 'admin', true, 0, 'Admin'), (2, 'user', 'user', 'user', true, 0, 'User');
  /*!40000 ALTER TABLE `user` ENABLE KEYS */;
  UNLOCK TABLES;
 
@@ -595,6 +595,12 @@ SET daily_points = daily_points + (SELECT (1 + question.question_type)
 WHERE user_id = new.user_id AND product_id = new.product_id;
 
 END IF;
+
+UPDATE User 
+SET points = points + (SELECT (1 + question.question_type)
+					   FROM question
+					   WHERE question.question_id = new.question_id)
+WHERE user_id = new.user_id;
 
 END$$
 DELIMITER ;

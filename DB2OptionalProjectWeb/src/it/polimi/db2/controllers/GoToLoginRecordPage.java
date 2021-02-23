@@ -48,22 +48,19 @@ public class GoToLoginRecordPage extends HttpServlet {
 		
 		List<LoginRecord> loginRecordOfTheDay = new ArrayList<>();
 		loginRecordOfTheDay = lrService.loadLoginRecordOfTheDay();
-		
-		System.out.println(loginRecordOfTheDay.get(0).getUser().getUsername());
-		System.out.println(loginRecordOfTheDay.get(0).getLogin_timestamp());
 
 		// Redirect to the login record page
 		String path = "LoginRecordPage.html";
 		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());		
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());	
+		
+		//System.out.println(loginRecordOfTheDay.get(0).getUser().getUsername());
 		
 		
-		if(loginRecordOfTheDay == null)
+		if(loginRecordOfTheDay.size() == 0)
 			ctx.setVariable("noLoginRecord", "No one has logged in today!");
 		else {
 			ctx.setVariable("loginRecords", loginRecordOfTheDay);
-			ctx.setVariable("usernameLoginRecords", "Username");
-			ctx.setVariable("timestampLoginRecords", "Timestamp");
 		}
 
 		templateEngine.process(path, ctx, response.getWriter());

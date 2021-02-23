@@ -15,6 +15,8 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import it.polimi.db2.marketing.entities.User;
+
 @WebServlet("/GoToProfilePage")
 public class GoToProfilePage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -43,9 +45,39 @@ public class GoToProfilePage extends HttpServlet {
 			return;
 		}
 
+		User loggedUser = (User) session.getAttribute("user");
+
 		String path = "Profile.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+
+		ctx.setVariable("UserUsername", loggedUser.getUsername());
+		ctx.setVariable("UserEmail", loggedUser.getEmail());
+		ctx.setVariable("UserPoints", loggedUser.getPoints());
+
+		boolean showPassword;
+
+		if (session.getAttribute("showHidePassword") != null)
+			showPassword = (boolean) session.getAttribute("showHidePassword");
+		else
+			showPassword = false;
+		
+		if(request.getParameter("ShowHide") != null) {
+			showPassword = !showPassword;
+			session.setAttribute("showHidePassword", showPassword);
+		}
+		
+		if(showPassword) {
+			ctx.setVariable("UserPassword", loggedUser.getPassword());
+		} else {
+			int passwordLength = loggedUser.getPassword().length();
+			String passwordHided = "";
+			for(int i = 0; i < passwordLength; i++)
+				passwordHided += "*";
+			
+			ctx.setVariable("UserPassword", passwordHided);
+		}
+
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 
