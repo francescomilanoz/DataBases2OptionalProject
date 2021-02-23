@@ -33,6 +33,9 @@ public class GoToHomePage extends HttpServlet {
 	@EJB(name = "it.polimi.db2.marketing.services/ReviewService")
 	private ReviewService rService;
 	
+	@EJB(name = "it.polimi.db2.marketing.services/LoginRecordService")
+	private LoginRecordService lService;
+	
 	public GoToHomePage() {
 		super();
 	}
@@ -56,6 +59,8 @@ public class GoToHomePage extends HttpServlet {
 			return;
 		}
 		
+		//Add the login record
+		lService.createLoginRecord(new Date(), (User) session.getAttribute("user"));
 		
 		// Product of the day
 		Product productOfTheDay = null;

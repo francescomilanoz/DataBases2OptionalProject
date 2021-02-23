@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Home</title>
+<link rel="stylesheet" type="text/css" media="all"
+	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+</head>
+<body>
+
+	<div align="right">
+		<a th:href="@{/AdminHome}">Back</a>
+		<a th:href="@{/Logout}">Logout</a>
+	</div>
+	<h1>Login Records: </h1>
+<!--  	<p
+		th:text="${'Check your position, ' + session.user.username + '!'}"></p>
+		-->
+	
+
+	<table>
+		<thead>
+			<tr>
+				<th>Username</th>
+				<th>TimeStamp</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="lr : loginRecords">
+				<td th:text="${lr.getUser().getUsername()}"></td>
+				<td th:text="${lr.getLogin_timestamp()}"></td>
+			</tr>
+		</tbody>
+	</table>
+	<p th:text=" ${noLoginRecord}"></p>
+
+</body>
+</html>
