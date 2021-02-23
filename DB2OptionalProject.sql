@@ -112,7 +112,7 @@ DROP TABLE IF EXISTS `review`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `review` (
   `review_id` int NOT NULL AUTO_INCREMENT,
-  `review_text` varchar(45) DEFAULT NULL,
+  `review_text` varchar(400) DEFAULT NULL,
   `product_id` int NOT NULL, 
   `user_id` int NOT NULL, 
   PRIMARY KEY (`review_id`), 

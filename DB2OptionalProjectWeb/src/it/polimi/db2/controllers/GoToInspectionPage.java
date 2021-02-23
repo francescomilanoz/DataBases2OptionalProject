@@ -54,8 +54,7 @@ public class GoToInspectionPage extends HttpServlet {
 				products = pService.getProductsList();
 				
 				ctx.setVariable("products", products);
-				System.out.println(products.get(0).getName());
-						
+				
 				templateEngine.process(path, ctx, response.getWriter());
 	}
 

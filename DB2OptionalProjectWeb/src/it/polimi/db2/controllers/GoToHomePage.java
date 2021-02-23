@@ -91,18 +91,21 @@ public class GoToHomePage extends HttpServlet {
 		List<Review> reviews = new ArrayList<>();
 		reviews = rService.loadReviewByProduct(productOfTheDay);
 		
+		List<Review> reviewsOneLine = new ArrayList<>();
+		
 		for(int i = 0; i < reviews.size(); i++) {
-			String tmp = reviews.get(i).getReview_text();
-			tmp.replaceAll("\n",",");
-			tmp.replaceAll("\r",",");
-			reviews.get(i).setReview_text(tmp);
+			Review reviewOneLine = reviews.get(i);
+			reviewOneLine.setReview_text(reviewOneLine.getReview_text().replaceAll("\\r\n"," "));
+			reviewsOneLine.add(reviewOneLine);
+			
+			System.out.println("reviews sono: " + reviewOneLine.getReview_text().replaceAll("\r\n"," ") + " " + reviewsOneLine.get(i));
 		}
 		
 		
 		if (reviews.size() != 0) {
-			ctx.setVariable("reviews", reviews);
+			ctx.setVariable("reviews", reviewsOneLine);
 		} else {
-			ctx.setVariable("reviews", reviews);
+			ctx.setVariable("reviews", reviewsOneLine);
 			ctx.setVariable("noReviews", "No reviews for the product of the day.");
 		}
 		

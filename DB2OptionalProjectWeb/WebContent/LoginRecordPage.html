@@ -9,10 +9,19 @@
 <body>
 
 	<div align="right">
-		<a th:href="@{/AdminHome}">Back</a>
-		<a th:href="@{/Logout}">Logout</a>
+		<a th:href="@{/AdminHome}">Back</a> <a th:href="@{/Logout}">Logout</a>
 	</div>
-	<h1>Login Records: </h1>	
+
+
+	<form action="LoginRecordPage" method="GET">
+		Select a date: <input type="date" name="date"
+						th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"
+						placeholder="yyyy-mm-dd" required />
+		<input type="submit" name="Search" value="Search"/>
+	</form>
+
+
+	<h1>Login Records:</h1>
 
 	<table>
 		<thead>

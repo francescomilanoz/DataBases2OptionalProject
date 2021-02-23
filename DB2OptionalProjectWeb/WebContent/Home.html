@@ -25,15 +25,25 @@
 
 
 		<div>
+		
+		The product of the day is 
+		<b th:text="${product.name}"></b> <br> <br>
 			<img alt="product" height="300" width="300"
 				th:src="*{'data:image/png;base64,'+ product.getProductImageData()}">
-			<p th:text="${product.name}"></p>
+			
 			<!-- <p th:text=" ${noProduct}"></p> -->
 		</div>
+		
+		<br> <br>
 
-		<a th:href="@{/Questionnaire}">Go To Questionnaire</a> <a
+		<a th:href="@{/Questionnaire}">Go To Questionnaire</a>
+		
+		<br> <br>
+		
+		 <a
 			th:href="@{/Leaderboard}">Go To Leaderboard</a>
 
+		<br> <br>
 
 		<table>
 			<thead>

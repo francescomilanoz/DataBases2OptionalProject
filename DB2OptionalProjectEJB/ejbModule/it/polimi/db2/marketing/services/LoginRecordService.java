@@ -26,11 +26,11 @@ public class LoginRecordService {
 		em.persist(loginRecord); // makes also the login record object managed via cascading
 	}
 
-	public List<LoginRecord> loadLoginRecordOfTheDay() {
-		java.util.Date todayDate =new java.util.Date();
-		java.util.Date tomorrowDate =new java.util.Date();
+	public List<LoginRecord> loadLoginRecordOfTheDay(Date date) {
 		Calendar todayCalendar = Calendar.getInstance(); 
+		todayCalendar.setTime(date);
 		Calendar tomorrowCalendar = Calendar.getInstance(); 
+		tomorrowCalendar.setTime(date);
 		
 		// today    
 		// reset hour, minutes, seconds and millis
@@ -48,19 +48,15 @@ public class LoginRecordService {
 		tomorrowCalendar.add(Calendar.DAY_OF_MONTH, 1);
 	
 		
-		todayDate = todayCalendar.getTime();
-		tomorrowDate = tomorrowCalendar.getTime();
+		java.util.Date todayDate = todayCalendar.getTime();
+		java.util.Date tomorrowDate = tomorrowCalendar.getTime();
 		
 		System.out.println("date: " + todayDate + tomorrowDate);
 		
 		List<LoginRecord> loginRecords = new ArrayList<>();
 		loginRecords = em.createNamedQuery("LoginRecord.findByDate", LoginRecord.class).setParameter(1, todayDate).setParameter(2,  tomorrowDate)
 				.getResultList();
-		
-		if(loginRecords.size() == 0) {
-			return null;
-		}
-		
+
 		return loginRecords;
 	}
 	
