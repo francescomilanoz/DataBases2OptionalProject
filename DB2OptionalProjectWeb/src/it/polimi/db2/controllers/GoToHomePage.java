@@ -33,6 +33,9 @@ public class GoToHomePage extends HttpServlet {
 	@EJB(name = "it.polimi.db2.marketing.services/ReviewService")
 	private ReviewService rService;
 	
+	//@EJB(name = "it.polimi.db2.marketing.services/LoginRecordService")
+	//private LoginRecordService lService;
+	
 	public GoToHomePage() {
 		super();
 	}
@@ -56,6 +59,8 @@ public class GoToHomePage extends HttpServlet {
 			return;
 		}
 		
+		//Add the login record
+		//lService.createLoginRecord(new Date(), (User) session.getAttribute("user"));
 		
 		// Product of the day
 		Product productOfTheDay = null;
@@ -67,15 +72,19 @@ public class GoToHomePage extends HttpServlet {
 		String path = "Home.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		
+		
 
 		
 		
 		if (productOfTheDay != null) {
 			ctx.setVariable("product", productOfTheDay);
+			ctx.setVariable("productIsPresent", "true");
 		} else {
 			Product emptyProduct = new Product("", new byte[0] , new Date());
 			ctx.setVariable("product", emptyProduct);
-			ctx.setVariable("noProduct", "No product of the day.");
+			//ctx.setVariable("noProduct", "No product of the day.");
+			ctx.setVariable("productIsPresent", "false");
 		}
 	
 		//Reviews of the Product of the day
@@ -89,7 +98,6 @@ public class GoToHomePage extends HttpServlet {
 			reviews.get(i).setReview_text(tmp);
 		}
 		
-		//System.out.println(reviews.get(0).getReview_text());
 		
 		if (reviews.size() != 0) {
 			ctx.setVariable("reviews", reviews);

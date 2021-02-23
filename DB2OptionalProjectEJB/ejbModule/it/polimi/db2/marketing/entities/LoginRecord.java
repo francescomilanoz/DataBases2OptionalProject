@@ -7,14 +7,15 @@ import javax.persistence.*;
 //import java.util.List;
 
 /**
- * The persistent class for the usertable database table.
+ * The persistent class for the login record database table.
  * 
  */
 @Entity
 @Table(name = "login_record", schema = "db_marketing_app")
-@NamedQueries({})
+@NamedQueries({@NamedQuery(name = "LoginRecord.findByDate", query = "SELECT lr FROM LoginRecord lr WHERE lr.login_timestamp >= ?1 AND lr.login_timestamp < ?2 ORDER BY lr.login_timestamp DESC")})
 
 public class LoginRecord implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -40,6 +41,27 @@ public class LoginRecord implements Serializable {
 		this.user = user;
 	}
 
+	public Date getLogin_timestamp() {
+		return login_timestamp;
+	}
+
+
+
+	public void setLogin_timestamp(Date login_timestamp) {
+		this.login_timestamp = login_timestamp;
+	}
+
+
+
+	public User getUser() {
+		return user;
+	}
+
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 	
 	
 }

@@ -33,42 +33,41 @@ public class UserService {
 		throw new NonUniqueResultException("More than one user registered with same credentials");
 
 	}
-	
+
 	public void createUser(String username, String email, String password) {
 		User user = new User(username, email, password);
-		
+
 		em.persist(user); // makes also mission object managed via cascading
 
 	}
-	
-	
-	
-	// check if the username already exists
-		public boolean checkUsernameUniqueness(String username) {
-			List<User> users = null;
-			users = em.createNamedQuery("User.checkUsernameUniqueness", User.class).setParameter(1, username)
-					.getResultList();
-			if (users.isEmpty())
-				return true;
-			else {
-				return false;
-			}
-		}
-		
-		// check if the email already exists
-		public boolean checkEmailUniqueness(String email) {
-			List<User> users = null;
-			users = em.createNamedQuery("User.checkEmailUniqueness", User.class).setParameter(1, email)
-					.getResultList();
-			if (users.isEmpty())
-				return true;
-			else {
-				return false;
-			}
-		}
-		
-		
 
+	// check if the username already exists
+	public boolean checkUsernameUniqueness(String username) {
+		List<User> users = null;
+		users = em.createNamedQuery("User.checkUsernameUniqueness", User.class).setParameter(1, username)
+				.getResultList();
+		if (users.isEmpty())
+			return true;
+		else {
+			return false;
+		}
+	}
+
+	// check if the email already exists
+	public boolean checkEmailUniqueness(String email) {
+		List<User> users = null;
+		users = em.createNamedQuery("User.checkEmailUniqueness", User.class).setParameter(1, email).getResultList();
+		if (users.isEmpty())
+			return true;
+		else {
+			return false;
+		}
+	}
+
+	public void blockUser(User u) {
+			em.createNamedQuery("User.blockUser", User.class).setParameter(1, u.getUsername()).executeUpdate();
+	}
+	
 
 	public void updateProfile(User u) throws UpdateProfileException {
 		try {

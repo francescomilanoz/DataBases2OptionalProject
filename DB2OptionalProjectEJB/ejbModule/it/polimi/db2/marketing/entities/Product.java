@@ -37,7 +37,20 @@ public class Product implements Serializable {
 	@OneToMany(mappedBy="product", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true ) //FetchType.LAZY is also the default, but it's written for clearity
 	 private List<Question> questions;
 
-	//Aggiungere review
+
+	
+	@OneToMany(mappedBy="product", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true ) //FetchType.LAZY is also the default, but it's written for clearity
+	 private List<Answer> answers;
+
+	
+	@OneToMany(mappedBy="product", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true ) //FetchType.LAZY is also the default, but it's written for clearity
+	 private List<Review> reviews;
+
+	
+	@OneToMany(mappedBy="product", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true ) //FetchType.LAZY is also the default, but it's written for clearity
+	 private List<Leaderboard> leaderboard;
+	
+
 
 
 	public Product() {

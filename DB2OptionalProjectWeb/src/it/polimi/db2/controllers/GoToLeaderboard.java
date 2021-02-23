@@ -1,7 +1,10 @@
 package it.polimi.db2.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.ejb.EJB;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,14 +18,18 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import it.polimi.db2.marketing.entities.User;
+import it.polimi.db2.marketing.entities.Leaderboard;
+import it.polimi.db2.marketing.entities.Product;
+import it.polimi.db2.marketing.services.LeaderboardService;
 
-@WebServlet("/GoToProfilePage")
-public class GoToProfilePage extends HttpServlet {
+@WebServlet("/Leaderboard")
+public class GoToLeaderboard extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
+	@EJB(name = "it.polimi.db2.marketing.services/LeaderboardService")
+	private LeaderboardService lService;
 
-	public GoToProfilePage() {
+	public GoToLeaderboard()  {
 		super();
 	}
 
@@ -37,45 +44,23 @@ public class GoToProfilePage extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// If the user is not logged in (not present in session) redirect to the login
-		String loginpath = getServletContext().getContextPath() + "/index.html";
+		
 		HttpSession session = request.getSession();
-		if (session.isNew() || session.getAttribute("user") == null) {
-			response.sendRedirect(loginpath);
-			return;
-		}
+		
+		List<Leaderboard> leaderboardsOfTheDay = new ArrayList<>();
+		leaderboardsOfTheDay = lService.loadLeaderboardByProductOrderByPoints((Product) session.getAttribute("productOfTheDay"));
 
-		User loggedUser = (User) session.getAttribute("user");
 
-		String path = "Profile.html";
+		// Redirect to the leaderboard page
+		String path = "Leaderboard.html";
 		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-
-		ctx.setVariable("UserUsername", loggedUser.getUsername());
-		ctx.setVariable("UserEmail", loggedUser.getEmail());
-		ctx.setVariable("UserPoints", loggedUser.getPoints());
-
-		boolean showPassword;
-
-		if (session.getAttribute("showHidePassword") != null)
-			showPassword = (boolean) session.getAttribute("showHidePassword");
-		else
-			showPassword = false;
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());		
 		
-		if(request.getParameter("ShowHide") != null) {
-			showPassword = !showPassword;
-			session.setAttribute("showHidePassword", showPassword);
-		}
 		
-		if(showPassword) {
-			ctx.setVariable("UserPassword", loggedUser.getPassword());
-		} else {
-			int passwordLength = loggedUser.getPassword().length();
-			String passwordHided = "";
-			for(int i = 0; i < passwordLength; i++)
-				passwordHided += "*";
-			
-			ctx.setVariable("UserPassword", passwordHided);
+		if(leaderboardsOfTheDay == null)
+			ctx.setVariable("noLeaderboard", "No one has submitted the questionnaire. Be the first!");
+		else {
+			ctx.setVariable("leaderboards", leaderboardsOfTheDay);
 		}
 
 		templateEngine.process(path, ctx, response.getWriter());

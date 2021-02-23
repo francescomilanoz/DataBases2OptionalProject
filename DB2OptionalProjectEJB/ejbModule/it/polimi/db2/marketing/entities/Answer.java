@@ -11,7 +11,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "answer", schema = "db_marketing_app")
-@NamedQueries({})
+@NamedQueries({@NamedQuery(name = "Answer.findByProduct", query = "SELECT a FROM Answer a WHERE a.product = ?1")})
 
 public class Answer implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -30,14 +30,20 @@ public class Answer implements Serializable {
 	 @ManyToOne
 	 @JoinColumn(name = "question_id")
 	 private Question question;
+	 
+	 
+	 @ManyToOne
+	 @JoinColumn(name = "product_id")
+	 private Product product;
 
 	public Answer() {
 	}
 	
-	public Answer(String answer_text, User user, Question question) {
+	public Answer(String answer_text, User user, Question question, Product product) {
 		this.answer_text = answer_text;
 		this.user = user;
 		this.question = question;
+		this.product = product;
 	}
 
 	public String getAnswer_text() {

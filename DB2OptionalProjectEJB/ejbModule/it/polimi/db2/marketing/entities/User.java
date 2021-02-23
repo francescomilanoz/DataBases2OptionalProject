@@ -14,7 +14,8 @@ import javax.persistence.*;
 @Table(name = "user", schema = "db_marketing_app")
 @NamedQueries({@NamedQuery(name = "User.checkCredentials", query = "SELECT r FROM User r  WHERE r.username = ?1 and r.password = ?2"), 
 			   @NamedQuery(name = "User.checkUsernameUniqueness", query = "SELECT r FROM User r  WHERE r.username = ?1"),
-			   @NamedQuery(name = "User.checkEmailUniqueness", query = "SELECT r FROM User r  WHERE r.email = ?1")})
+			   @NamedQuery(name = "User.checkEmailUniqueness", query = "SELECT r FROM User r  WHERE r.email = ?1"), 
+			   @NamedQuery(name = "User.blockUser", query = "UPDATE User u SET u.active = False WHERE u.username = ?1")})
 
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -35,8 +36,11 @@ public class User implements Serializable {
 	
 	private String type;
 	
+
+	/*
 	@OneToMany(mappedBy="user") //When a user account is deleted, the relative login records still remain in the database. 
 	private ArrayList<LoginRecord> loginRecords;
+	*/
 
 	public User() {
 	}
@@ -105,20 +109,5 @@ public class User implements Serializable {
 	public void setType(String type) {
 		this.type = type;
 	}
-
-	/*public List<Mission> getMissions() {
-		return this.missions;
-	}
-
-	public void addMission(Mission mission) {
-		getMissions().add(mission);
-		mission.setReporter(this);
-		// aligns both sides of the relationship
-		// if mission is new, invoking persist() on user cascades also to mission
-	}
-
-	public void removeMission(Mission mission) {
-		getMissions().remove(mission);
-	}*/
 
 }

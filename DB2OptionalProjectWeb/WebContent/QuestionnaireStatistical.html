@@ -18,12 +18,12 @@
 
 				<div th:if="${ageCompiled}=='false'">
 					<p th:text= "${age}"></p>
-					<input type="text" name="age" min="14">
+					<input type="number" name="age" min="14">
 				</div>
 
 				<div th:if="${ageCompiled}=='true'">
 					<p th:text=" ${age}"></p>
-					<input type="text" name="age" min="14" value= "${ageValue}">
+					<input type="number" name="age" min="14" value= "${ageValue}">
 				</div>
 
 

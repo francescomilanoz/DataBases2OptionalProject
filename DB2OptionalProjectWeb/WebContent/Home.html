@@ -20,45 +20,59 @@
 
 	<p th:text="${'Nice to see you again ' + session.user.username}"></p>
 
-	<div>
-		<img alt="product" height="300" width="300"
-			th:src="*{'data:image/png;base64,'+ product.getProductImageData()}">
-		<p th:text="${product.name}"></p>
-		<p th:text=" ${noProduct}"></p>
+
+	<div th:if="${productIsPresent}=='true'">
+
+
+		<div>
+			<img alt="product" height="300" width="300"
+				th:src="*{'data:image/png;base64,'+ product.getProductImageData()}">
+			<p th:text="${product.name}"></p>
+			<!-- <p th:text=" ${noProduct}"></p> -->
+		</div>
+
+		<a th:href="@{/Questionnaire}">Go To Questionnaire</a> <a
+			th:href="@{/Leaderboard}">Go To Leaderboard</a>
+
+
+		<table>
+			<thead>
+				<tr>
+					<th>User</th>
+					<th>Review</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="r : ${reviews}">
+					<td th:text="${r.user.getUsername()}"></td>
+					<td th:text="${r.review_text}"></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div>
+			<p th:text=" ${noReviews}"></p>
+		</div>
+
+		<div>
+			<p>Complete the form to create a review. Notice that if there is
+				no product of the day, your review will not be published!</p>
+			<form action="#" th:action="@{/CreateReview}" method="POST">
+				<fieldset>
+					<p>
+						Review:
+						<textarea id="review" name="review" rows="4" cols="50" required></textarea>
+					</p>
+					<input type="submit" name="Create Review" value="Create Review">
+				</fieldset>
+			</form>
+		</div>
+
+
 	</div>
 
-	<a th:href="@{/Questionnaire}">Go To Questionnaire</a>
 
-	<table>
-		<thead>
-			<tr>
-				<th>User</th>
-				<th>Review</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="r : ${reviews}">
-			 <td th:text="${r.user.getUsername()}"></td> 	
-				<td th:text="${r.review_text}"></td>
-			</tr>
-		</tbody>
-	</table>
-
-	<div>
-		<p th:text=" ${noReviews}"></p>
-	</div>
-
-	<div>
-		<p>Complete the form to create a review</p>
-		<form action="#" th:action="@{/CreateReview}" method="POST">
-			<fieldset>
-				<p>
-					Review: <textarea id="review" name="review" rows="4" cols="50" required></textarea>
-				</p>
-				<input type="submit" name="Create Review" value="Create Review">
-			</fieldset>
-		</form>
-	</div>
+	<div th:if="${productIsPresent}=='false'"> There is no product of the day. Come back tomorrow! </div>
 
 </body>
 </html>
