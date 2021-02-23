@@ -48,8 +48,9 @@ public class GoToQuestionnairePage extends HttpServlet {
 
 		Leaderboard leaderboard = lService.loadLeaderboardByUserAndProduct((User) session.getAttribute("user"),
 				(Product) session.getAttribute("productOfTheDay"));
-
-		if (leaderboard == null) {
+		Product product = (Product) session.getAttribute("productOfTheDay");
+		
+		if (leaderboard == null && product != null) {
 			// return the user to the right view
 			String ctxpath = getServletContext().getContextPath();
 			String path = ctxpath + "/QuestionnaireMarketing";
@@ -59,8 +60,9 @@ public class GoToQuestionnairePage extends HttpServlet {
 			String path = "QuestionnaireAlreadyFilled.html";
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			
-			if(leaderboard.getDaily_points() == -1)
+			if (product == null)
+				ctx.setVariable("questionnaireResponse", "Sorry, there is no questionnaire for the moment!");
+			else if(leaderboard.getDaily_points() == -1)
 				ctx.setVariable("questionnaireResponse", "Sorry, you can't submit the questionnare after having deleted it! Return tomorrow.");
 			else
 				ctx.setVariable("questionnaireResponse", "You have already filled the questionnaire of today! Return tomorrow.");

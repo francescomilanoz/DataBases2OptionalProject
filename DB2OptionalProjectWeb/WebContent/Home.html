@@ -30,6 +30,7 @@
 	<a th:href="@{/Questionnaire}">Go To Questionnaire</a>
 	<a th:href="@{/Leaderboard}">Go To Leaderboard</a>
 
+
 	<table>
 		<thead>
 			<tr>
@@ -50,7 +51,7 @@
 	</div>
 
 	<div>
-		<p>Complete the form to create a review</p>
+		<p>Complete the form to create a review. Notice that if there is no product of the day, your review will not be published!</p>
 		<form action="#" th:action="@{/CreateReview}" method="POST">
 			<fieldset>
 				<p>

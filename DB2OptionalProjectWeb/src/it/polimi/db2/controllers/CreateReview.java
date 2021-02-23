@@ -38,7 +38,15 @@ public class CreateReview extends HttpServlet {
 			response.sendRedirect(loginpath);
 			return;
 		}
+		
+		Product product = (Product) session.getAttribute("productOfTheDay");
+		if(product == null) {
+			String ctxpath = getServletContext().getContextPath();
+			String path = ctxpath + "/Home";
+			response.sendRedirect(path);
+		}
 
+		else {
 		// Get and parse all parameters from request
 		boolean isBadRequest = false;
 		String review_text = null;
@@ -62,7 +70,7 @@ public class CreateReview extends HttpServlet {
 		System.out.println(session);
 		
 		User user = (User) session.getAttribute("user");
-		Product product = (Product) session.getAttribute("productOfTheDay");
+		
 		System.out.println(user);
 		System.out.println(product);
 		
@@ -77,6 +85,7 @@ public class CreateReview extends HttpServlet {
 		String ctxpath = getServletContext().getContextPath();
 		String path = ctxpath + "/Home";
 		response.sendRedirect(path);
+		}
 	}
 
 	public void destroy() {
