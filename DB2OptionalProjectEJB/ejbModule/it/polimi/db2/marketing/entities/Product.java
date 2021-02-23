@@ -37,7 +37,7 @@ public class Product implements Serializable {
 	@OneToMany(mappedBy="product", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true ) //FetchType.LAZY is also the default, but it's written for clearity
 	 private List<Question> questions;
 
-	
+	//Aggiungere review
 
 
 	public Product() {
@@ -50,7 +50,10 @@ public class Product implements Serializable {
 		this.product_image = productImage;
 	}
 
-
+	public int getId() {
+		return product_id;
+	}
+	
 	public String getName() {
 		return product_name;
 	}

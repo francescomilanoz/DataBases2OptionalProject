@@ -5,6 +5,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import it.polimi.db2.marketing.entities.Product;
+import it.polimi.db2.marketing.entities.Review;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -65,6 +67,18 @@ public class ProductService {
 		Product product = new Product(title, image, date);
 		
 		em.persist(product); // makes also product object managed via cascading
+	}
+	
+	public List<Product> getProductsList(){
+		java.util.Date date = new java.util.Date();
+		List<Product> products = new ArrayList<>();
+		products = em.createQuery("SELECT p FROM Product p WHERE p.product_date < ?1").setParameter(1, date).getResultList();
+		return products;
+	}
+	
+	public void deleteProduct(int productId) {
+		Product product = em.find(Product.class, productId);
+		em.remove(product);
 	}
 	
 	

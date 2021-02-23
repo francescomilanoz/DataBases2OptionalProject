@@ -89,7 +89,7 @@ public class GoToHomePage extends HttpServlet {
 			reviews.get(i).setReview_text(tmp);
 		}
 		
-		System.out.println(reviews.get(0).getReview_text());
+		//System.out.println(reviews.get(0).getReview_text());
 		
 		if (reviews.size() != 0) {
 			ctx.setVariable("reviews", reviews);

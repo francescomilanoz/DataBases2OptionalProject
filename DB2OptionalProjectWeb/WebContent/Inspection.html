@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Statistics</title>
+</head>
+<body>
+<div align="right">
+	<a th:href="@{/AdminHome}">Back</a>
+		<a th:href="@{/Logout}">Log-out</a>
+	</div>
+	<h1>Statistics</h1>
+	
+	<form action="#" th:action="@{/LoadPastQuestionnaire}" method="POST">
+			<fieldset>
+				<p>
+					Select a past questionnaire to load statistics
+				</p>
+				<p>
+					<label for="products">Choose a questionnarie:</label> 
+					<select name="productName" id="productName">
+						<option th:each="p : ${products}" th:value="${p.getName()}"
+							th:text="${p.getName()}"></option>
+					</select>
+				</p>
+				<input type="submit" name="Load statictics">
+			</fieldset>
+		</form>
+		
+		
+	
+	<table>
+		<tr>
+				 <td th:text="${questionnaire}"></td>		
+		</tr>
+		<tr><td>Dato 1,1</td><td>Dato 1,2</td></tr>
+		<tr><td>Dato 2,1</td><td>Dato 2,2</td></tr>
+		<tr><td>Dato 3,1</td><td>Dato 3,2</td></tr>
+	</table>
+
+
+</body>
+</html>
