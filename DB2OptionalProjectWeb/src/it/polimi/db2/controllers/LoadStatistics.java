@@ -18,7 +18,12 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
+
+import it.polimi.db2.marketing.entities.Leaderboard;
 import it.polimi.db2.marketing.entities.Product;
+import it.polimi.db2.marketing.entities.User;
+import it.polimi.db2.marketing.services.LeaderboardService;
 import it.polimi.db2.marketing.services.ProductService;
 
 @WebServlet("/LoadPastQuestionnaire")
@@ -29,6 +34,9 @@ public class LoadStatistics extends HttpServlet {
 	@EJB(name = "it.polimi.db2.marketing.services/ProductService")
 	private ProductService pService;
 
+	@EJB(name = "it.polimi.db2.marketing.services/LeaderboardService")
+	private LeaderboardService lService;
+	
 	public LoadStatistics() {
 		super();
 	}
@@ -45,7 +53,7 @@ public class LoadStatistics extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-				String questionnaire = "Statistic questionnaire of product " + StringEscapeUtils.escapeJava(request.getParameter("productName"));
+				String questionnaire = "Statistics:";
 				
 				// Redirect to the Home page and add missions to the parameters
 				String path = "Inspection.html";
@@ -56,8 +64,25 @@ public class LoadStatistics extends HttpServlet {
 				List<Product> products = new ArrayList<>();
 				products = pService.getProductsList();
 				
-				ctx.setVariable("products", products);
-				ctx.setVariable("questionnaire", questionnaire);
+				List<User> usersC = new ArrayList<>();
+				usersC = lService.loadUsersDeleteProduct(Integer.parseInt(request.getParameter("productId")));
+				
+				List<Leaderboard> leaderboardS = new ArrayList<>();
+				leaderboardS = lService.loadUsersSubmitProduct(Integer.parseInt(request.getParameter("productId")));
+				
+				if (products.size() != 0) {
+					ctx.setVariable("products", products);
+					ctx.setVariable("questionnaire", questionnaire);
+					ctx.setVariable("submitted", "List of users who submitted the questionnaire");
+					ctx.setVariable("cancelled", "List of users who cancelled the questionnaire");
+					ctx.setVariable("answers", "Questionnaire answers of each user");
+					ctx.setVariable("usersC", usersC);
+					ctx.setVariable("usersS", leaderboardS);
+				} else {
+					ctx.setVariable("products", products);
+					ctx.setVariable("noProduct", "No product inserted yet.");
+				}
+				
 				//System.out.println(products.get(0).getName());
 						
 				templateEngine.process(path, ctx, response.getWriter());

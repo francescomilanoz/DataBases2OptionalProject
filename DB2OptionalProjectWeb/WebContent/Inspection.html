@@ -18,24 +18,30 @@
 				</p>
 				<p>
 					<label for="products">Choose a questionnarie:</label> 
-					<select name="productName" id="productName">
-						<option th:each="p : ${products}" th:value="${p.getName()}"
+					<select name="productId" id="productId">
+						<option th:each="p : ${products}" th:value="${p.getId()}"
 							th:text="${p.getName()}"></option>
 					</select>
+					<td th:text="${noProduct}"></td>
 				</p>
 				<input type="submit" name="Load statictics">
 			</fieldset>
 		</form>
 		
-		
+		<br>
 	
 	<table>
 		<tr>
 				 <td th:text="${questionnaire}"></td>		
 		</tr>
-		<tr><td>Dato 1,1</td><td>Dato 1,2</td></tr>
-		<tr><td>Dato 2,1</td><td>Dato 2,2</td></tr>
-		<tr><td>Dato 3,1</td><td>Dato 3,2</td></tr>
+		<br>
+		<tr> <td th:text="${submitted}"></td><td th:text="${answers}"></td></tr>
+		<tr th:each="u : ${usersS}">
+			<td th:text="${u.getUser().getUsername()}"></td>
+			<td th:text="${u.getDaily_points()}"></td></tr>
+		<tr> <td th:text="${cancelled}"></td></tr>
+		<tr th:each="g : ${usersC}">
+			<td th:text="${g.getUsername()}"></td></tr>
 	</table>
 
 

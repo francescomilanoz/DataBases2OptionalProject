@@ -52,9 +52,14 @@ public class GoToInspectionPage extends HttpServlet {
 				//Product lists
 				List<Product> products = new ArrayList<>();
 				products = pService.getProductsList();
-				
-				ctx.setVariable("products", products);
-				
+
+				if (products.size() != 0) {
+					ctx.setVariable("products", products);
+				} else {
+					ctx.setVariable("products", products);
+					ctx.setVariable("noProduct", "No product inserted yet.");
+				}
+					
 				templateEngine.process(path, ctx, response.getWriter());
 	}
 
