@@ -1,10 +1,8 @@
 package it.polimi.db2.marketing.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-
+import java.util.List;
 import javax.persistence.*;
-//import java.util.List;
 
 /**
  * The persistent class for the usertable database table.
@@ -15,7 +13,8 @@ import javax.persistence.*;
 @NamedQueries({@NamedQuery(name = "User.checkCredentials", query = "SELECT r FROM User r  WHERE r.username = ?1 and r.password = ?2"), 
 			   @NamedQuery(name = "User.checkUsernameUniqueness", query = "SELECT r FROM User r  WHERE r.username = ?1"),
 			   @NamedQuery(name = "User.checkEmailUniqueness", query = "SELECT r FROM User r  WHERE r.email = ?1"), 
-			   @NamedQuery(name = "User.blockUser", query = "UPDATE User u SET u.active = False WHERE u.username = ?1")})
+			   @NamedQuery(name = "User.blockUser", query = "UPDATE User u SET u.active = False WHERE u.username = ?1"),
+			   @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = ?1")})
 
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -39,16 +38,16 @@ public class User implements Serializable {
 
 	
 	@OneToMany(mappedBy="user") //When a user account is deleted, the relative login records still remain in the database. 
-	private ArrayList<LoginRecord> loginRecords;
+	private List<LoginRecord> loginRecords;
 	
-	@OneToMany(mappedBy="user") 
-	private ArrayList<Answer> answers;
+	@OneToMany(mappedBy="user", cascade = CascadeType.REMOVE, orphanRemoval=true) 
+	private List<Answer> answers;
 	
-	@OneToMany(mappedBy="user") 
-	private ArrayList<Review> reviews;
+	@OneToMany(mappedBy="user", cascade = CascadeType.REMOVE, orphanRemoval=true) 
+	private List<Review> reviews;
 	
-	@OneToMany(mappedBy="user") 
-	private ArrayList<Leaderboard> leaderboards;
+	@OneToMany(mappedBy="user", cascade = CascadeType.REMOVE, orphanRemoval=true) 
+	private List<Leaderboard> leaderboards;
 
 	public User() {
 	}
@@ -117,5 +116,47 @@ public class User implements Serializable {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+	public List<Answer> getAnswers() {
+		return answers;
+	}
+
+	public void setAnswers(List<Answer> answers) {
+		this.answers = answers;
+	}
+
+	public int getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(int user_id) {
+		this.user_id = user_id;
+	}
+
+	public List<LoginRecord> getLoginRecords() {
+		return loginRecords;
+	}
+
+	public void setLoginRecords(List<LoginRecord> loginRecords) {
+		this.loginRecords = loginRecords;
+	}
+
+	public List<Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(List<Review> reviews) {
+		this.reviews = reviews;
+	}
+
+	public List<Leaderboard> getLeaderboards() {
+		return leaderboards;
+	}
+
+	public void setLeaderboards(List<Leaderboard> leaderboards) {
+		this.leaderboards = leaderboards;
+	}
+	
+	
 
 }

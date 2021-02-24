@@ -43,7 +43,7 @@ public class Product implements Serializable {
 	 private List<Answer> answers;
 
 	
-	@OneToMany(mappedBy="product", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true ) //FetchType.LAZY is also the default, but it's written for clearity
+	@OneToMany(mappedBy="product", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true ) //FetchType.LAZY is also the default, but it's written for clearity
 	 private List<Review> reviews;
 
 	
@@ -88,6 +88,87 @@ public class Product implements Serializable {
 	public void setProductImage(byte[] productImage) {
 		this.product_image = productImage;
 	}
+
+
+	public int getProduct_id() {
+		return product_id;
+	}
+
+
+	public void setProduct_id(int product_id) {
+		this.product_id = product_id;
+	}
+
+
+	public String getProduct_name() {
+		return product_name;
+	}
+
+
+	public void setProduct_name(String product_name) {
+		this.product_name = product_name;
+	}
+
+
+	public Date getProduct_date() {
+		return product_date;
+	}
+
+
+	public void setProduct_date(Date product_date) {
+		this.product_date = product_date;
+	}
+
+
+	public byte[] getProduct_image() {
+		return product_image;
+	}
+
+
+	public void setProduct_image(byte[] product_image) {
+		this.product_image = product_image;
+	}
+
+
+	public List<Question> getQuestions() {
+		return questions;
+	}
+
+
+	public void setQuestions(List<Question> questions) {
+		this.questions = questions;
+	}
+
+
+	public List<Answer> getAnswers() {
+		return answers;
+	}
+
+
+	public void setAnswers(List<Answer> answers) {
+		this.answers = answers;
+	}
+
+
+	public List<Review> getReviews() {
+		return reviews;
+	}
+
+
+	public void setReviews(List<Review> reviews) {
+		this.reviews = reviews;
+	}
+
+
+	public List<Leaderboard> getLeaderboard() {
+		return leaderboard;
+	}
+
+
+	public void setLeaderboard(List<Leaderboard> leaderboard) {
+		this.leaderboard = leaderboard;
+	}
+	
 	
 	
 	

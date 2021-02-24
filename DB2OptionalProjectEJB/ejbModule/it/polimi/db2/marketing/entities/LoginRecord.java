@@ -62,6 +62,20 @@ public class LoginRecord implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+
+
+	public int getLogin_id() {
+		return login_id;
+	}
+
+
+
+	public void setLogin_id(int login_id) {
+		this.login_id = login_id;
+	}
+	
+	
 	
 	
 }

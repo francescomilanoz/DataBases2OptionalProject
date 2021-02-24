@@ -40,5 +40,15 @@ public class OffensiveWord implements Serializable {
 		this.offensive_word_text = offensive_word_text;
 	}
 
+	public int getOffensive_word_id() {
+		return offensive_word_id;
+	}
+
+	public void setOffensive_word_id(int offensive_word_id) {
+		this.offensive_word_id = offensive_word_id;
+	}
+	
+	
+
 	
 }

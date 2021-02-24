@@ -2,6 +2,7 @@ package it.polimi.db2.controllers;
 
 import java.io.IOException;
 
+import javax.ejb.EJB;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,11 +17,15 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.db2.marketing.entities.User;
+import it.polimi.db2.marketing.services.UserService;
 
 @WebServlet("/GoToProfilePage")
 public class GoToProfilePage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
+	
+	@EJB(name = "it.polimi.db2.marketing.services/UserService")
+	private UserService uService;
 
 	public GoToProfilePage() {
 		super();
@@ -44,9 +49,12 @@ public class GoToProfilePage extends HttpServlet {
 			response.sendRedirect(loginpath);
 			return;
 		}
+		
 
-		User loggedUser = (User) session.getAttribute("user");
-
+		User oldUser = (User) session.getAttribute("user");
+		User loggedUser = uService.getUserByUsername(oldUser.getUsername());
+		session.setAttribute("user", loggedUser);
+		
 		String path = "Profile.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());

@@ -1,9 +1,5 @@
 package it.polimi.db2.marketing.services;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

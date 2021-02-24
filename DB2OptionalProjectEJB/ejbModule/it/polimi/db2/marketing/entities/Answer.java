@@ -71,6 +71,24 @@ public class Answer implements Serializable {
 		this.question = question;
 	}
 
+	public int getAnswer_id() {
+		return answer_id;
+	}
+
+	public void setAnswer_id(int answer_id) {
+		this.answer_id = answer_id;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+	
+	
+
 
 
 }

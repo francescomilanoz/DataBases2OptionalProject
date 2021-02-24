@@ -63,17 +63,24 @@ public class UserService {
 			return false;
 		}
 	}
+	
+	
+	// check if the email already exists
+	public User getUserByUsername(String username) {
+		
+		em.getEntityManagerFactory().getCache().evictAll();
+		
+		List<User> users = null;
+		users = em.createNamedQuery("User.findByUsername", User.class).setParameter(1, username).getResultList();
+		if (users.isEmpty())
+			return null;
+		else {
+			return users.get(0);
+		}
+	}
 
 	public void blockUser(User u) {
 			em.createNamedQuery("User.blockUser", User.class).setParameter(1, u.getUsername()).executeUpdate();
 	}
 	
-
-	public void updateProfile(User u) throws UpdateProfileException {
-		try {
-			em.merge(u);
-		} catch (PersistenceException e) {
-			throw new UpdateProfileException("Could not change profile");
-		}
-	}
 }

@@ -3,6 +3,7 @@ package it.polimi.db2.controllers;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -62,7 +63,7 @@ public class GoToCreateQuestionnairePage extends HttpServlet {
 		String questionText = request.getParameter("questionText");
 		System.out.println(questionText + "prev num: " + numQuestions);
 
-		ArrayList<String> questionTexts = new ArrayList<String>();
+		List<String> questionTexts = new ArrayList<String>();
 
 		for (int i = 0; i < numQuestions; i++) {
 			

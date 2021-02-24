@@ -1,6 +1,9 @@
 package it.polimi.db2.marketing.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 
 import it.polimi.db2.marketing.utils.QuestionType;
@@ -24,6 +27,9 @@ public class Question implements Serializable {
 	private String question_text;
 
 	private QuestionType question_type;
+	
+	@OneToMany(mappedBy="question", cascade = CascadeType.REMOVE, orphanRemoval=true) 
+	private List<Answer> answers;
 	
 	 @ManyToOne
 	 @JoinColumn(name = "product_id")
@@ -53,6 +59,24 @@ public class Question implements Serializable {
 	public void setQuestion_type(QuestionType question_type) {
 		this.question_type = question_type;
 	}
+
+	public int getQuestion_id() {
+		return question_id;
+	}
+
+	public void setQuestion_id(int question_id) {
+		this.question_id = question_id;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+	
+	
 
 
 }
