@@ -81,5 +81,17 @@ public class ProductService {
 		em.remove(product);
 	}
 	
+	public Product loadProductById(int product_id) {
+		List<Product> products = new ArrayList<>();
+		products = em.createNamedQuery("Product.findById", Product.class).setParameter(1, product_id)
+				.getResultList();
+		
+		if(products.size() == 0) {
+			return null;
+		}
+		
+		return products.get(0);
+	}
+	
 	
 }

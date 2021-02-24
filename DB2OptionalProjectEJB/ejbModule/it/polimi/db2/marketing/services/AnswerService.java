@@ -1,5 +1,9 @@
 package it.polimi.db2.marketing.services;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,5 +26,13 @@ public class AnswerService {
 		
 		em.persist(answer); // makes also question object managed via cascading
 	}	
+	
+	public List<Answer> loadAnswerByProductAndUser(Product product, User user) {
+		List<Answer> answers = new ArrayList<>();
+		answers = em.createNamedQuery("Answer.findByProductUser", Answer.class).setParameter(1, product.getProduct_id()).setParameter(2, user.getId())
+				.getResultList();
+	
+		return answers;
+	}
 
 }

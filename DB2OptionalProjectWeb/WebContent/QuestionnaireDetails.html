@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Statistics</title>
+<link rel="stylesheet" type="text/css" media="all"
+	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+</head>
+<body>
+<div align="right">
+	<a th:href="@{/AdminHome}">Home</a>
+		<a th:href="@{/Logout}">Log-out</a>
+	</div>
+	<h1>Questionnaire Details</h1> 
+	 <h3 th:text="${'Product: ' + product.getName()}"></h3>
+	 <h3 th:text="${'User: ' + user.getUsername()}"></h3>
+
+	<br>
+	
+	<table>
+		<tr><th>Question</th><th>Answers</th></tr>
+		<tr th:each="a : ${answers}">
+			<td th:text="${a.getQuestion().getQuestion_text()}"></td>
+			<td th:text="${a.getAnswer_text()}"></td>
+		</tr>
+	</table>
+
+	
+</body>
+</html>

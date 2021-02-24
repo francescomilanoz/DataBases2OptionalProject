@@ -65,15 +65,18 @@ public class LoadStatistics extends HttpServlet {
 				products = pService.getProductsList();
 				
 				List<User> usersC = new ArrayList<>();
-				if(request.getParameter("productId") !=null)
+				Product productSelected = null;
+				if(request.getParameter("productId") !=null) {
+					productSelected = pService.loadProductById(Integer.parseInt(request.getParameter("productId")));
 					usersC = lService.loadUsersDeleteProduct(Integer.parseInt(request.getParameter("productId")));
-				
+				}
 				
 				List<Leaderboard> leaderboardS = new ArrayList<>();
 				if(request.getParameter("productId") !=null)
 					leaderboardS = lService.loadUsersSubmitProduct(Integer.parseInt(request.getParameter("productId")));
 				
 				if (products.size() != 0) {
+					ctx.setVariable("productSelected", productSelected);
 					ctx.setVariable("products", products);
 					ctx.setVariable("questionnaire", questionnaire);
 					ctx.setVariable("submitted", "List of users who submitted the questionnaire");

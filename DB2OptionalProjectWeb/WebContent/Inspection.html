@@ -9,7 +9,7 @@
 </head>
 <body>
 <div align="right">
-	<a th:href="@{/AdminHome}">Back</a>
+	<a th:href="@{/AdminHome}">Home</a>
 		<a th:href="@{/Logout}">Log-out</a>
 	</div>
 	<h1>Statistics</h1>
@@ -34,19 +34,21 @@
 		<br>
 	
 	<table>
-		<tr>
-				 <td th:text="${questionnaire}"></td>		
-		</tr>
-
-		<tr> <td th:text="${submitted}"></td><td th:text="${answers}"></td></tr>
+		
+		<tr><th>User who submitted the questionnaire</th><th>Number of answers</th><th>Details</th></tr>
 		<tr th:each="u : ${usersS}">
 			<td th:text="${u.getUser().getUsername()}"></td>
-			<td th:text="${u.getDaily_points()}"></td></tr>
-		<tr> <td th:text="${cancelled}"></td></tr>
+			<td th:text="${u.getDaily_points()}"></td>
+			<td><a th:href="@{/QuestionnaireDetails(username=${u.getUser().getUsername()}, product_id=${productSelected.getProduct_id()})}">Details</a></td></tr>
+		
+	</table>
+	<br><br>
+	<table>
+	
+	<tr><th>User who cancelled the questionnaire</th></tr>
 		<tr th:each="g : ${usersC}">
 			<td th:text="${g.getUsername()}"></td></tr>
 	</table>
-
-
+	
 </body>
 </html>
