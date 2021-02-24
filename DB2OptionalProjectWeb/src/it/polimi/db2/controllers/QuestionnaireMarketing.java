@@ -75,7 +75,8 @@ public class QuestionnaireMarketing extends HttpServlet {
 		out.println("<form action=\"" + "/DB2OptionalProjectWeb/QuestionnaireStatistical" + "\" method=GET>");
 		
 		List<String> answers = new ArrayList<String>();
-		answers = (List<String>) session.getAttribute("marketingQuestions");
+		if(session.getAttribute("marketingQuestions") != null)
+			answers = (List<String>) session.getAttribute("marketingQuestions");
 		
 		if(questions.size() == 0) {
 			out.println("The admin has not set any Marketing questions for the product of the day. Please go to the next section to answer some statistical optional questions. <br><br>");
@@ -86,7 +87,7 @@ public class QuestionnaireMarketing extends HttpServlet {
 			out.println(questions.get(i).getQuestion_text() + "  ");
 			out.println("<input type=\"text\" name=\"answer"+i+"\"");
 			
-			if(answers != null) {
+			if(answers != null && answers.size() > 0 && answers.get(i) != null) {
 				out.println(" value=\"" + answers.get(i) + "\"");
 			}
 			

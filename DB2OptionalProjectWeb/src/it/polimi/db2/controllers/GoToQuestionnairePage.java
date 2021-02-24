@@ -1,6 +1,8 @@
 package it.polimi.db2.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
@@ -51,6 +53,16 @@ public class GoToQuestionnairePage extends HttpServlet {
 		Product product = (Product) session.getAttribute("productOfTheDay");
 		
 		if (leaderboard == null && product != null) {
+			
+			
+			
+			//Clean the session that could be dirty from a previous partial compilation
+			if(session.getAttribute("marketingQuestions") != null)
+				session.removeAttribute("marketingQuestions");
+			
+			
+
+			
 			// return the user to the right view
 			String ctxpath = getServletContext().getContextPath();
 			String path = ctxpath + "/QuestionnaireMarketing";
