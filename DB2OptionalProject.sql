@@ -605,6 +605,18 @@ WHERE user_id = new.user_id;
 END$$
 DELIMITER ;
 
+
+DELIMITER $$
+USE `db_marketing_app`$$
+CREATE DEFINER=`root`@`localhost` TRIGGER `reduce_points` AFTER delete ON `leaderboard` FOR EACH ROW BEGIN
+UPDATE user
+SET points = points - old.daily_points
+WHERE user.user_id = old.user_id;
+                       
+END$$
+DELIMITER ;
+
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
