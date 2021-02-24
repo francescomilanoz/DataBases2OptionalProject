@@ -32,31 +32,6 @@ public class Leaderboard implements Serializable {
 	 @ManyToOne
 	 @JoinColumn(name = "user_id")
 	 private User user;
-	 
-	 
-	 public Date getLeaderboard_timestamp() {
-		return leaderboard_timestamp;
-	}
-
-	public void setLeaderboard_timestamp(Date leaderboard_timestamp) {
-		this.leaderboard_timestamp = leaderboard_timestamp;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public Product getProduct() {
-		return product;
-	}
-
-	public void setProduct(Product product) {
-		this.product = product;
-	}
 
 	@ManyToOne
 	 @JoinColumn(name = "product_id")
@@ -79,6 +54,30 @@ public class Leaderboard implements Serializable {
 	public void setDaily_points(int daily_points) {
 		this.daily_points = daily_points;
 	}
+
+	 public Date getLeaderboard_timestamp() {
+			return leaderboard_timestamp;
+		}
+
+		public void setLeaderboard_timestamp(Date leaderboard_timestamp) {
+			this.leaderboard_timestamp = leaderboard_timestamp;
+		}
+
+		public User getUser() {
+			return user;
+		}
+
+		public void setUser(User user) {
+			this.user = user;
+		}
+
+		public Product getProduct() {
+			return product;
+		}
+
+		public void setProduct(Product product) {
+			this.product = product;
+		}
 
 
 }

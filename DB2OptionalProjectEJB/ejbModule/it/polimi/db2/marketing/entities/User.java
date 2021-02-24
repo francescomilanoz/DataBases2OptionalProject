@@ -37,10 +37,18 @@ public class User implements Serializable {
 	private String type;
 	
 
-	/*
+	
 	@OneToMany(mappedBy="user") //When a user account is deleted, the relative login records still remain in the database. 
 	private ArrayList<LoginRecord> loginRecords;
-	*/
+	
+	@OneToMany(mappedBy="user") 
+	private ArrayList<Answer> answers;
+	
+	@OneToMany(mappedBy="user") 
+	private ArrayList<Review> reviews;
+	
+	@OneToMany(mappedBy="user") 
+	private ArrayList<Leaderboard> leaderboards;
 
 	public User() {
 	}
