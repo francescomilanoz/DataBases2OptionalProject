@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
 <meta charset="UTF-8">
 <title>Statistics</title>
+<link rel="stylesheet" type="text/css" media="all"
+	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
 </head>
 <body>
 <div align="right">
@@ -21,10 +24,10 @@
 					<select name="productId" id="productId">
 						<option th:each="p : ${products}" th:value="${p.getId()}"
 							th:text="${p.getName()}"></option>
-					</select>
-					<td th:text="${noProduct}"></td>
-				</p>
-				<input type="submit" name="Load statictics">
+					</select>	</p>
+					<p th:text="${noProduct}"></p>
+			
+				<input type="submit" name="Load statictics" value="Load statistics">
 			</fieldset>
 		</form>
 		
@@ -34,7 +37,7 @@
 		<tr>
 				 <td th:text="${questionnaire}"></td>		
 		</tr>
-		<br>
+
 		<tr> <td th:text="${submitted}"></td><td th:text="${answers}"></td></tr>
 		<tr th:each="u : ${usersS}">
 			<td th:text="${u.getUser().getUsername()}"></td>
