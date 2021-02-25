@@ -13,8 +13,6 @@ import javax.persistence.*;
 @Table(name = "offensive_words", schema = "db_marketing_app")
 @NamedQueries({@NamedQuery(name = "OffensiveWord.findByText", query = "SELECT o FROM OffensiveWord o WHERE o.offensive_word_text = ?1")})
 
-//SELECT o FROM OffensiveWord o WHERE ?1 = CONCAT('%', o.offensive_word_text, '%')
-//"SELECT o FROM OffensiveWord o WHERE o.offensive_word_text = ?1"
 
 public class OffensiveWord implements Serializable {
 	private static final long serialVersionUID = 1L;
