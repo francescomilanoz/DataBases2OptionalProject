@@ -14,7 +14,9 @@ import javax.persistence.*;
 			   @NamedQuery(name = "User.checkUsernameUniqueness", query = "SELECT r FROM User r  WHERE r.username = ?1"),
 			   @NamedQuery(name = "User.checkEmailUniqueness", query = "SELECT r FROM User r  WHERE r.email = ?1"), 
 			   @NamedQuery(name = "User.blockUser", query = "UPDATE User u SET u.active = False WHERE u.username = ?1"),
-			   @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = ?1")})
+			   @NamedQuery(name = "User.unlockUser", query = "UPDATE User u SET u.active = True WHERE u.username = ?1"),
+			   @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = ?1"), 
+			   @NamedQuery(name = "User.findByActive", query = "SELECT u FROM User u WHERE u.active = ?1")})
 
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;

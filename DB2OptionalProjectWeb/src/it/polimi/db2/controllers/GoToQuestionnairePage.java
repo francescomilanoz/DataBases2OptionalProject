@@ -60,6 +60,9 @@ public class GoToQuestionnairePage extends HttpServlet {
 			if(session.getAttribute("marketingQuestions") != null)
 				session.removeAttribute("marketingQuestions");
 			
+			if(session.getAttribute("statisticalAnswers") != null)
+				session.removeAttribute("statisticalAnswers");
+			
 			
 
 			

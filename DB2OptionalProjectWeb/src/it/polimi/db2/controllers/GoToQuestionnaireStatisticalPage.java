@@ -83,15 +83,53 @@ public class GoToQuestionnaireStatisticalPage extends HttpServlet {
 		
 		String ageCompiled;
 		String ageValue = "";
-		if(session.getAttribute("statisticalAnswers") == null) 
+		String maleCompiled = "false";
+		String femaleCompiled = "false";
+		String otherCompiled = "false";
+		String lowCompiled = "false";
+		String mediumCompiled = "false";
+		String highCompiled = "false";
+		if(session.getAttribute("statisticalAnswers") == null) {
 			ageCompiled = "false";
+		}
+
 		else {
 			
 			ageCompiled = "true";
 			List<String> statisticalQuestionsPreCompiled = (List<String>) session.getAttribute("statisticalAnswers");
 			
-			if(statisticalQuestionsPreCompiled.size() > 0)
-				ageValue = statisticalQuestionsPreCompiled.get(0);
+			if(statisticalQuestionsPreCompiled.size() > 0) {
+				
+				if(statisticalQuestionsPreCompiled.get(0) != null)
+					ageValue = statisticalQuestionsPreCompiled.get(0);
+				
+				if(statisticalQuestionsPreCompiled.get(1) != null) {
+					if(statisticalQuestionsPreCompiled.get(1).equals("male"))
+						maleCompiled = "true";
+					else if(statisticalQuestionsPreCompiled.get(1).equals("female"))
+						femaleCompiled = "true";
+					else if(statisticalQuestionsPreCompiled.get(1).equals("other"))
+						otherCompiled = "true";
+					else if(statisticalQuestionsPreCompiled.get(1).equals("Low"))
+						lowCompiled = "true";
+					else if(statisticalQuestionsPreCompiled.get(1).equals("Medium"))
+						mediumCompiled = "true";
+					else if(statisticalQuestionsPreCompiled.get(1).equals("High"))
+						highCompiled = "true";	
+				}
+				
+				if(statisticalQuestionsPreCompiled.get(2) != null) {
+					if(statisticalQuestionsPreCompiled.get(2).equals("Low"))
+						lowCompiled = "true";
+					else if(statisticalQuestionsPreCompiled.get(2).equals("Medium"))
+						mediumCompiled = "true";
+					else if(statisticalQuestionsPreCompiled.get(2).equals("High"))
+						highCompiled = "true";	
+				}
+				
+				
+			}
+				
 			
 		}
 		
@@ -99,6 +137,13 @@ public class GoToQuestionnaireStatisticalPage extends HttpServlet {
 		
 		ctx.setVariable("ageCompiled", ageCompiled);
 		ctx.setVariable("ageValue", ageValue);
+	
+		ctx.setVariable("maleCompiled", maleCompiled);
+		ctx.setVariable("femaleCompiled", femaleCompiled);
+		ctx.setVariable("otherCompiled", otherCompiled);
+		ctx.setVariable("lowCompiled", lowCompiled);
+		ctx.setVariable("mediumCompiled", mediumCompiled);
+		ctx.setVariable("highCompiled", highCompiled);
 		
 		templateEngine.process(path, ctx, response.getWriter());
 	}

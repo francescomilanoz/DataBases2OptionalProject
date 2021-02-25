@@ -23,25 +23,57 @@
 
 				<div th:if="${ageCompiled}=='true'">
 					<p th:text=" ${age}"></p>
-					<input type="number" name="age" min="14" value= "${ageValue}">
+					<input type="number" name="age" min="14" th:value="${ageValue}">
 				</div>
 
 
 				<p th:text=" ${gender}"></p>
-				<input type="radio" id="male" name="gender" value="male"> <label
-					for="male">Male</label> <input type="radio" id="female"
-					name="gender" value="female"> <label for="female">Female</label>
-				<input type="radio" id="other" name="gender" value="other">
-				<label for="other">Other</label>
+				<div th:if="${maleCompiled}=='true'">
+				<input type="radio" id="male" name="gender" value="male" checked> <label for="male">Male</label>
+				</div>
+				
+				<div th:if="${maleCompiled}=='false'">
+				<input type="radio" id="male" name="gender" value="male"> <label for="male">Male</label>
+				</div>
+					
+				<div th:if="${femaleCompiled}=='true'">
+				<input type="radio" id="female" name="gender" value="female" checked> <label for="female">Female</label>
+				</div>
+				
+				<div th:if="${femaleCompiled}=='false'">
+				<input type="radio" id="female" name="gender" value="female"> <label for="female">Female</label>
+				</div>
+				
+				<div th:if="${otherCompiled}=='true'">
+				<input type="radio" id="other" name="gender" value="other" checked> <label for="other">Other</label>
+				</div>
+				
+				<div th:if="${otherCompiled}=='false'">
+				<input type="radio" id="other" name="gender" value="other"> <label for="other">Other</label>
+				</div>
 
 
 				<p th:text=" ${expertiseLevel}"></p>
-				<input type="radio" id="Low" name="expertiseLevel" value="Low">
-				<label for="Low">Low</label> <input type="radio" id="Medium"
-					name="expertiseLevel" value="Medium"> <label for="Medium">Medium</label>
-				<input type="radio" id="High" name="expertiseLevel" value="High">
-				<label for="High">High</label>
-
+				<div th:if="${lowCompiled}=='true'">
+				<input type="radio" id="Low" name="expertiseLevel" value="Low" checked>	<label for="Low">Low</label> 
+				</div>
+				<div th:if="${lowCompiled}=='false'">
+				<input type="radio" id="Low" name="expertiseLevel" value="Low">	<label for="Low">Low</label> 
+				</div>
+				
+				<div th:if="${mediumCompiled}=='true'">
+				<input type="radio" id="Medium" name="expertiseLevel" value="Medium" checked>	<label for="Medium">Medium</label> 
+				</div>
+				<div th:if="${mediumCompiled}=='false'">
+				<input type="radio" id="Medium" name="expertiseLevel" value="Medium">	<label for="Medium">Medium</label> 
+				</div>
+				
+				<div th:if="${highCompiled}=='true'">
+				<input type="radio" id="High" name="expertiseLevel" value="High" checked>	<label for="High">High</label> 
+				</div>
+				<div th:if="${highCompiled}=='false'">
+				<input type="radio" id="High" name="expertiseLevel" value="High">	<label for="High">High</label> 
+				</div>
 
 				<p>
 				<input type="submit" name="decision" value="Submit">

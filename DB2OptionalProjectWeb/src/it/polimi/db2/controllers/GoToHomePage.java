@@ -95,10 +95,10 @@ public class GoToHomePage extends HttpServlet {
 		
 		for(int i = 0; i < reviews.size(); i++) {
 			Review reviewOneLine = reviews.get(i);
-			reviewOneLine.setReview_text(reviewOneLine.getReview_text().replaceAll("\\r\n"," "));
+			//reviewOneLine.setReview_text(reviewOneLine.getReview_text().replaceAll("\r\n"," "));
 			reviewsOneLine.add(reviewOneLine);
 			
-			System.out.println("reviews sono: " + reviewOneLine.getReview_text().replaceAll("\r\n"," ") + " " + reviewsOneLine.get(i));
+			System.out.println("reviews sono: " + reviewOneLine.getReview_text() + " " + reviewsOneLine.get(i));
 		}
 		
 		

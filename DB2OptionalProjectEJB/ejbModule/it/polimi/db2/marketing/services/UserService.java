@@ -78,9 +78,26 @@ public class UserService {
 			return users.get(0);
 		}
 	}
+	
+	public List<User> getBannedUsers() {
+		
+		em.getEntityManagerFactory().getCache().evictAll();
+		
+		List<User> users = null;
+		users = em.createNamedQuery("User.findByActive", User.class).setParameter(1, false).getResultList();
+
+		return users;
+	}
 
 	public void blockUser(User u) {
 			em.createNamedQuery("User.blockUser", User.class).setParameter(1, u.getUsername()).executeUpdate();
 	}
+	
+
+	public void unlockUser(User u) {
+			em.createNamedQuery("User.unlockUser", User.class).setParameter(1, u.getUsername()).executeUpdate();
+	}
+	
+	
 	
 }

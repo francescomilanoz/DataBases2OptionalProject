@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Home</title>
+<link rel="stylesheet" type="text/css" media="all"
+	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+</head>
+<body>
+
+	<div align="right">
+		<a th:href="@{/AdminHome}">Home</a>
+		<a th:href="@{/Logout}">Logout</a>
+	</div>
+
+
+	<h1>Banned Users:</h1>
+
+		<table>
+		<thead>
+			<tr>
+				<th>Username</th>
+				<th>Unlock</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="b : ${bannedUsers}">
+				 <td th:text="${b.getUsername()}"></td>
+				 <td>
+				 <form action="BannedUsersPage" method="POST">
+				 	<input type="hidden" name= "username" th:value="${b.getUsername()}">
+				 	<input type="submit" name="unlockAction" value="Unlock">
+				 </form>	
+				 </td>			
+			</tr>
+		</tbody>
+	</table>
+
+	<div>
+		<p th:text=" ${noBannedUsers}"></p>
+	</div>
+
+</body>
+</html>

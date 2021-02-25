@@ -65,7 +65,7 @@ public class CreateReview extends HttpServlet {
 
 		try {
 			
-			review_text = StringEscapeUtils.escapeJava(request.getParameter("review"));
+			review_text = request.getParameter("review");
 			
 			isBadRequest = review_text.isEmpty();
 		} catch (NumberFormatException | NullPointerException e) {
